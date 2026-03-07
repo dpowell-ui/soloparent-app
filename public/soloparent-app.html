@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Solo Parent Society — Join</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+/* ── RESET ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --g:#34C759;--gd:#248A3D;--gp:#E8F8EC;
+  --ink:#1D1D1F;--ink2:#3A3A3C;--ink3:#6E6E73;
+  --fog:#F5F5F7;--white:#fff;
+  --red:#FF3B30;--amber:#FF9F0A;--blue:#007AFF;
+  --font:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  --ease:cubic-bezier(.4,0,.2,1);
+  --sh:0 2px 20px rgba(0,0,0,.08);
+  --sh2:0 8px 40px rgba(0,0,0,.14);
+}
+html{-webkit-font-smoothing:antialiased;}
+body{font-family:var(--font);background:var(--fog);color:var(--ink);min-height:100vh;overflow-x:hidden;}
+img{display:block;max-width:100%;}
+button,input,select,textarea{font-family:var(--font);}
+
+/* ── LAYOUT ── */
+.app{display:flex;min-height:100vh;}
+
+/* ── LEFT PANEL — brand sidebar ── */
+.sidebar{
+  width:420px;flex-shrink:0;
+  background:var(--ink);
+  display:flex;flex-direction:column;
+  position:sticky;top:0;height:100vh;overflow:hidden;
+}
+.sidebar-img{
+  position:absolute;inset:0;
+  background:url('https://soloparent.org/wp-content/uploads/2025/03/hugsquare.jpg') center/cover no-repeat;
+  opacity:.18;
+}
+.sidebar-content{
+  position:relative;z-index:1;
+  padding:48px 44px;
+  display:flex;flex-direction:column;
+  height:100%;
+}
+.sidebar-logo{height:36px;margin-bottom:auto;}
+.sidebar-headline{
+  font-size:2.4rem;font-weight:700;letter-spacing:-.04em;
+  color:#fff;line-height:1.08;margin-bottom:16px;
+}
+.sidebar-headline em{font-style:italic;font-weight:300;color:rgba(255,255,255,.5);}
+.sidebar-sub{font-size:15px;font-weight:300;color:rgba(255,255,255,.45);line-height:1.7;margin-bottom:40px;}
+.sidebar-steps{display:flex;flex-direction:column;gap:0;}
+.sstep{
+  display:flex;align-items:flex-start;gap:14px;
+  padding:14px 0;
+  border-bottom:1px solid rgba(255,255,255,.06);
+  transition:opacity .3s;
+}
+.sstep:last-child{border:none;}
+.sstep.done .sstep-num{background:var(--g);color:#fff;border-color:var(--g);}
+.sstep.active .sstep-num{background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.3);}
+.sstep.pending .sstep-num{background:transparent;color:rgba(255,255,255,.25);border-color:rgba(255,255,255,.1);}
+.sstep.active .sstep-label{color:#fff;}
+.sstep.done .sstep-label{color:rgba(255,255,255,.6);}
+.sstep.pending .sstep-label{color:rgba(255,255,255,.25);}
+.sstep-num{
+  width:28px;height:28px;border-radius:50%;
+  border:1.5px solid;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:600;flex-shrink:0;margin-top:1px;
+  transition:all .3s;
+}
+.sstep-info{}
+.sstep-label{font-size:13px;font-weight:500;transition:color .3s;}
+.sstep-desc{font-size:11px;color:rgba(255,255,255,.3);margin-top:2px;}
+.sidebar-bottom{margin-top:auto;padding-top:32px;}
+.sidebar-quote{
+  font-size:13px;font-style:italic;font-weight:300;
+  color:rgba(255,255,255,.35);line-height:1.6;
+  border-left:2px solid rgba(255,255,255,.1);
+  padding-left:14px;
+}
+
+/* ── MAIN CONTENT ── */
+.main{
+  flex:1;display:flex;align-items:center;justify-content:center;
+  padding:48px 32px;min-height:100vh;
+}
+.card{
+  background:var(--white);border-radius:24px;
+  box-shadow:var(--sh2);
+  width:100%;max-width:540px;
+  overflow:hidden;
+}
+.card-head{padding:40px 44px 0;}
+.card-body{padding:32px 44px 44px;}
+.step-eyebrow{
+  font-size:11px;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--g);margin-bottom:10px;
+}
+.step-title{
+  font-size:1.8rem;font-weight:700;letter-spacing:-.03em;
+  color:var(--ink);margin-bottom:8px;line-height:1.15;
+}
+.step-sub{font-size:15px;font-weight:300;color:var(--ink3);line-height:1.65;}
+
+/* Progress bar */
+.progress-bar{height:3px;background:var(--fog);position:relative;overflow:hidden;}
+.progress-fill{height:100%;background:var(--g);transition:width .5s var(--ease);}
+
+/* ── FORM ELEMENTS ── */
+.field{margin-bottom:20px;}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;}
+label{
+  display:block;font-size:12px;font-weight:600;
+  color:var(--ink2);margin-bottom:7px;letter-spacing:.02em;
+}
+input[type=text],input[type=email],input[type=password],select,textarea{
+  width:100%;padding:13px 16px;
+  border:1.5px solid rgba(0,0,0,.1);border-radius:10px;
+  font-size:15px;color:var(--ink);background:var(--white);
+  outline:none;transition:border .2s,box-shadow .2s;
+  -webkit-appearance:none;
+}
+input:focus,select:focus,textarea:focus{
+  border-color:var(--g);
+  box-shadow:0 0 0 3px rgba(52,199,89,.12);
+}
+input.error{border-color:var(--red);}
+.field-hint{font-size:11px;color:var(--ink3);margin-top:5px;}
+.field-error{font-size:11px;color:var(--red);margin-top:5px;display:none;}
+.field-error.show{display:block;}
+
+/* Password strength */
+.pw-strength{display:flex;gap:4px;margin-top:8px;}
+.pw-bar{flex:1;height:3px;border-radius:2px;background:var(--fog);transition:background .3s;}
+.pw-bar.weak{background:var(--red);}
+.pw-bar.fair{background:var(--amber);}
+.pw-bar.strong{background:var(--g);}
+.pw-label{font-size:11px;color:var(--ink3);margin-top:4px;}
+
+/* ── ASSESSMENT QUESTIONS ── */
+.q-block{margin-bottom:28px;}
+.q-text{font-size:15px;font-weight:500;color:var(--ink);margin-bottom:14px;line-height:1.5;}
+.q-options{display:flex;flex-direction:column;gap:8px;}
+.q-opt{
+  display:flex;align-items:center;gap:12px;
+  padding:13px 16px;border-radius:10px;
+  border:1.5px solid rgba(0,0,0,.08);
+  cursor:pointer;transition:all .18s;
+  font-size:14px;color:var(--ink2);font-weight:400;
+  background:var(--white);
+}
+.q-opt:hover{border-color:var(--g);background:var(--gp);}
+.q-opt.selected{border-color:var(--g);background:var(--gp);color:var(--ink);font-weight:500;}
+.q-opt-radio{
+  width:18px;height:18px;border-radius:50%;
+  border:2px solid rgba(0,0,0,.15);
+  flex-shrink:0;transition:all .18s;
+  display:flex;align-items:center;justify-content:center;
+}
+.q-opt.selected .q-opt-radio{border-color:var(--g);background:var(--g);}
+.q-opt.selected .q-opt-radio::after{content:'';width:6px;height:6px;border-radius:50%;background:#fff;}
+
+/* ── STAGE RESULT ── */
+.stage-result{text-align:center;padding:8px 0 16px;}
+.stage-badge{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:10px 22px;border-radius:980px;
+  font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+  margin-bottom:20px;
+}
+.stage-triage  {background:#FFF0EE;color:#D63B2B;border:1.5px solid #FFD5CF;}
+.stage-recovery{background:var(--gp);color:var(--gd);border:1.5px solid #C3EEC7;}
+.stage-wellness{background:#E5F5FB;color:#0071A4;border:1.5px solid #B3DFF0;}
+.stage-emoji{font-size:3.5rem;margin-bottom:16px;line-height:1;}
+.stage-name{font-size:2rem;font-weight:700;letter-spacing:-.03em;color:var(--ink);margin-bottom:12px;}
+.stage-desc{font-size:15px;font-weight:300;color:var(--ink3);line-height:1.72;max-width:400px;margin:0 auto 24px;}
+.stage-info{
+  background:var(--fog);border-radius:12px;
+  padding:18px 20px;text-align:left;
+  display:flex;gap:12px;align-items:flex-start;
+}
+.stage-info-ico{font-size:1.2rem;flex-shrink:0;margin-top:1px;}
+.stage-info p{font-size:13px;color:var(--ink3);line-height:1.6;}
+.stage-info p strong{color:var(--ink);font-weight:500;}
+
+/* ── GUIDELINES ── */
+.guideline-list{display:flex;flex-direction:column;gap:12px;margin-bottom:28px;}
+.guideline-item{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:14px 16px;background:var(--fog);border-radius:10px;
+}
+.guideline-ico{font-size:1.1rem;flex-shrink:0;margin-top:1px;}
+.guideline-text{font-size:13px;color:var(--ink2);line-height:1.55;}
+.guideline-text strong{font-weight:600;color:var(--ink);display:block;margin-bottom:2px;}
+.agree-row{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:16px;background:var(--gp);border-radius:10px;
+  border:1.5px solid rgba(52,199,89,.2);cursor:pointer;
+}
+.agree-check{
+  width:20px;height:20px;border-radius:5px;
+  border:2px solid rgba(0,0,0,.15);
+  flex-shrink:0;margin-top:1px;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .18s;
+}
+.agree-check.checked{background:var(--g);border-color:var(--g);}
+.agree-check.checked::after{content:'✓';color:#fff;font-size:11px;font-weight:700;}
+.agree-label{font-size:13px;color:var(--ink2);line-height:1.55;}
+
+/* ── PROFILE SETUP ── */
+.avatar-row{
+  display:flex;align-items:center;gap:20px;margin-bottom:28px;
+  padding:20px;background:var(--fog);border-radius:14px;
+}
+.avatar-circle{
+  width:72px;height:72px;border-radius:50%;
+  background:var(--gp);border:2px dashed var(--g);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.8rem;cursor:pointer;flex-shrink:0;
+  transition:all .2s;overflow:hidden;
+}
+.avatar-circle:hover{background:#d4f0d7;}
+.avatar-circle img{width:100%;height:100%;object-fit:cover;}
+.avatar-info{}
+.avatar-info strong{display:block;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:3px;}
+.avatar-info span{font-size:12px;color:var(--ink3);}
+.avatar-btn{
+  font-size:12px;font-weight:600;color:var(--g);
+  background:none;border:none;cursor:pointer;padding:0;margin-top:6px;display:block;
+}
+
+/* Solo By chips */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;}
+.chip{
+  padding:8px 16px;border-radius:980px;
+  border:1.5px solid rgba(0,0,0,.1);
+  font-size:13px;font-weight:500;color:var(--ink2);
+  cursor:pointer;transition:all .18s;background:var(--white);
+}
+.chip:hover{border-color:var(--g);color:var(--gd);}
+.chip.selected{background:var(--gp);border-color:var(--g);color:var(--gd);}
+
+/* Notification toggles */
+.notif-list{display:flex;flex-direction:column;gap:10px;}
+.notif-item{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px;background:var(--fog);border-radius:10px;
+}
+.notif-label{}
+.notif-label strong{font-size:14px;font-weight:500;color:var(--ink);display:block;}
+.notif-label span{font-size:12px;color:var(--ink3);}
+.toggle{
+  width:44px;height:26px;border-radius:13px;
+  background:rgba(0,0,0,.1);position:relative;
+  cursor:pointer;transition:background .22s;flex-shrink:0;
+}
+.toggle.on{background:var(--g);}
+.toggle::after{
+  content:'';position:absolute;
+  width:22px;height:22px;border-radius:50%;
+  background:#fff;top:2px;left:2px;
+  transition:transform .22s;
+  box-shadow:0 1px 4px rgba(0,0,0,.2);
+}
+.toggle.on::after{transform:translateX(18px);}
+
+/* ── BUTTONS ── */
+.btn-primary{
+  width:100%;padding:15px;border-radius:980px;
+  background:var(--g);color:#fff;border:none;
+  font-size:16px;font-weight:600;letter-spacing:-.01em;
+  cursor:pointer;transition:all .22s var(--ease);
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.btn-primary:hover{background:var(--gd);transform:translateY(-1px);box-shadow:0 8px 24px rgba(52,199,89,.3);}
+.btn-primary:disabled{background:rgba(0,0,0,.1);color:rgba(0,0,0,.3);cursor:not-allowed;transform:none;box-shadow:none;}
+.btn-ghost{
+  width:100%;padding:14px;border-radius:980px;
+  background:transparent;color:var(--ink3);
+  border:1.5px solid rgba(0,0,0,.1);
+  font-size:15px;font-weight:400;
+  cursor:pointer;transition:all .22s;margin-top:10px;
+}
+.btn-ghost:hover{border-color:rgba(0,0,0,.25);color:var(--ink);}
+.btn-row{display:flex;gap:10px;}
+.btn-row .btn-primary,.btn-row .btn-ghost{margin:0;}
+.btn-back{
+  background:none;border:none;cursor:pointer;
+  font-size:14px;color:var(--ink3);display:flex;align-items:center;gap:6px;
+  padding:0;margin-bottom:24px;transition:color .2s;
+}
+.btn-back:hover{color:var(--ink);}
+
+/* ── WELCOME OVERLAY ── */
+.welcome-overlay{
+  position:fixed;inset:0;z-index:999;
+  background:rgba(0,0,0,.85);
+  backdrop-filter:blur(20px);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;
+  transition:opacity .4s;
+}
+.welcome-overlay.show{opacity:1;pointer-events:all;}
+.welcome-modal{
+  background:var(--ink);border-radius:24px;
+  width:min(560px,92vw);overflow:hidden;
+  transform:scale(.94);transition:transform .4s var(--ease);
+}
+.welcome-overlay.show .welcome-modal{transform:scale(1);}
+.welcome-video{
+  width:100%;aspect-ratio:16/9;background:#000;
+  position:relative;display:flex;align-items:center;justify-content:center;
+}
+.welcome-video-thumb{width:100%;height:100%;object-fit:cover;opacity:.5;position:absolute;inset:0;}
+.welcome-play{
+  width:72px;height:72px;border-radius:50%;
+  background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.25);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .22s;position:relative;z-index:1;
+}
+.welcome-play:hover{background:var(--g);border-color:var(--g);}
+.welcome-play-tri{width:0;height:0;border-top:11px solid transparent;border-bottom:11px solid transparent;border-left:18px solid #fff;margin-left:3px;}
+.welcome-body{padding:36px 40px 40px;}
+.welcome-tag{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(52,199,89,.12);color:#30D158;
+  border:1px solid rgba(52,199,89,.2);
+  padding:4px 12px;border-radius:980px;
+  font-size:11px;font-weight:600;letter-spacing:.06em;
+  text-transform:uppercase;margin-bottom:14px;
+}
+.welcome-h2{font-size:1.7rem;font-weight:700;letter-spacing:-.03em;color:#fff;margin-bottom:10px;}
+.welcome-p{font-size:14px;font-weight:300;color:rgba(255,255,255,.55);line-height:1.7;margin-bottom:28px;}
+.welcome-features{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:28px;}
+.wf{
+  background:rgba(255,255,255,.05);border-radius:10px;
+  padding:14px;display:flex;gap:10px;align-items:flex-start;
+}
+.wf-ico{font-size:1.1rem;flex-shrink:0;}
+.wf-label{font-size:12px;font-weight:500;color:rgba(255,255,255,.7);}
+.wf-sub{font-size:11px;color:rgba(255,255,255,.3);margin-top:2px;}
+.welcome-cta{
+  width:100%;padding:14px;border-radius:980px;
+  background:var(--g);color:#fff;border:none;
+  font-size:16px;font-weight:600;cursor:pointer;
+  transition:all .22s;
+}
+.welcome-cta:hover{background:var(--gd);}
+
+/* ── DIVIDER ── */
+.divider{
+  display:flex;align-items:center;gap:12px;
+  margin:20px 0;
+}
+.divider-line{flex:1;height:1px;background:rgba(0,0,0,.07);}
+.divider-text{font-size:12px;color:var(--ink3);}
+
+/* Social login */
+.social-btn{
+  width:100%;padding:13px;border-radius:10px;
+  background:var(--white);border:1.5px solid rgba(0,0,0,.1);
+  font-size:14px;font-weight:500;color:var(--ink2);
+  cursor:pointer;transition:all .18s;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  margin-bottom:10px;
+}
+.social-btn:hover{border-color:rgba(0,0,0,.25);background:var(--fog);}
+.social-ico{width:18px;height:18px;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .sidebar{display:none;}
+  .main{padding:24px 16px;}
+  .card-head,.card-body{padding-left:28px;padding-right:28px;}
+  .field-row{grid-template-columns:1fr;}
+}
+
+/* ── TRANSITION ── */
+.screen{display:none;animation:fadeUp .35s var(--ease) both;}
+.screen.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:none;}}
+</style>
+</head>
+<body>
+
+<!-- WELCOME OVERLAY -->
+<div class="welcome-overlay" id="welcomeOverlay">
+  <div class="welcome-modal">
+    <div class="welcome-video">
+      <img class="welcome-video-thumb" src="https://soloparent.org/wp-content/uploads/2025/03/community-1024x576.jpg" alt="Welcome"/>
+      <div class="welcome-play"><div class="welcome-play-tri"></div></div>
+    </div>
+    <div class="welcome-body">
+      <div class="welcome-tag">✦ You're in</div>
+      <div class="welcome-h2">Welcome to the Society.</div>
+      <p class="welcome-p">You've just joined a community of 220,000+ single parents who chose not to do this alone. Here's a quick look at what's waiting for you inside.</p>
+      <div class="welcome-features">
+        <div class="wf"><div class="wf-ico">🤝</div><div><div class="wf-label">Society Circles</div><div class="wf-sub">7 days a week</div></div></div>
+        <div class="wf"><div class="wf-ico">🎙️</div><div><div class="wf-label">Weekly Podcast</div><div class="wf-sub">500+ episodes</div></div></div>
+        <div class="wf"><div class="wf-ico">🌅</div><div><div class="wf-label">Daily Check-Ins</div><div class="wf-sub">Every morning</div></div></div>
+        <div class="wf"><div class="wf-ico">🏛️</div><div><div class="wf-label">Monthly Town Hall</div><div class="wf-sub">Live &amp; recorded</div></div></div>
+      </div>
+      <button class="welcome-cta" onclick="closeWelcome()">Take Me to the Society →</button>
+    </div>
+  </div>
+</div>
+
+<div class="app">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-img"></div>
+    <div class="sidebar-content">
+      <img class="sidebar-logo" src="https://soloparent.org/wp-content/uploads/2025/02/Solo-Parent-Logo-RGB-White-1024x415.png" alt="Solo Parent"/>
+      <div style="height:48px;"></div>
+      <div class="sidebar-headline">Stronger parents.<br/><em>Thriving kids.</em></div>
+      <p class="sidebar-sub">Join a free global community built by single parents, for single parents — so no one figures this out alone.</p>
+      <div class="sidebar-steps" id="sidebarSteps">
+        <div class="sstep active" data-step="1">
+          <div class="sstep-num">1</div>
+          <div class="sstep-info">
+            <div class="sstep-label">Create Account</div>
+            <div class="sstep-desc">Name, email &amp; password</div>
+          </div>
+        </div>
+        <div class="sstep pending" data-step="2">
+          <div class="sstep-num">2</div>
+          <div class="sstep-info">
+            <div class="sstep-label">Wellness Assessment</div>
+            <div class="sstep-desc">Find your stage</div>
+          </div>
+        </div>
+        <div class="sstep pending" data-step="3">
+          <div class="sstep-num">3</div>
+          <div class="sstep-info">
+            <div class="sstep-label">Your Stage</div>
+            <div class="sstep-desc">Triage, Recovery or Wellness</div>
+          </div>
+        </div>
+        <div class="sstep pending" data-step="4">
+          <div class="sstep-num">4</div>
+          <div class="sstep-info">
+            <div class="sstep-label">Society Guidelines</div>
+            <div class="sstep-desc">Community agreement</div>
+          </div>
+        </div>
+        <div class="sstep pending" data-step="5">
+          <div class="sstep-num">5</div>
+          <div class="sstep-info">
+            <div class="sstep-label">Set Up Your Profile</div>
+            <div class="sstep-desc">Photo, story &amp; notifications</div>
+          </div>
+        </div>
+      </div>
+      <div class="sidebar-bottom">
+        <p class="sidebar-quote">"Solo Parent gave me a community where I felt seen and known." — Katrina, Single Mom</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="card">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:20%"></div></div>
+
+      <!-- ── STEP 1: CREATE ACCOUNT ── -->
+      <div class="screen active" id="step1">
+        <div class="card-head">
+          <div class="step-eyebrow">Step 1 of 5</div>
+          <div class="step-title">Create your account</div>
+          <p class="step-sub">Join free — no credit card, no catch.</p>
+        </div>
+        <div class="card-body">
+          <button class="social-btn">
+            <svg class="social-ico" viewBox="0 0 18 18"><path d="M16.51 8H8.98v3h4.3c-.18 1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 002.38-5.88c0-.57-.05-.66-.15-1.18z" fill="#4285F4"/><path d="M8.98 17c2.16 0 3.97-.72 5.3-1.94l-2.6-2a4.8 4.8 0 01-7.18-2.54H1.83v2.07A8 8 0 008.98 17z" fill="#34A853"/><path d="M4.5 10.52a4.8 4.8 0 010-3.04V5.41H1.83a8 8 0 000 7.18l2.67-2.07z" fill="#FBBC05"/><path d="M8.98 4.18c1.17 0 2.23.4 3.06 1.2l2.3-2.3A8 8 0 001.83 5.4L4.5 7.49a4.77 4.77 0 014.48-3.3z" fill="#EA4335"/></svg>
+            Continue with Google
+          </button>
+          <div class="divider"><div class="divider-line"></div><div class="divider-text">or create with email</div><div class="divider-line"></div></div>
+          <div class="field-row">
+            <div class="field" style="margin:0;">
+              <label>First Name</label>
+              <input type="text" id="firstName" placeholder="Sarah"/>
+            </div>
+            <div class="field" style="margin:0;">
+              <label>Last Name</label>
+              <input type="text" id="lastName" placeholder="Johnson"/>
+            </div>
+          </div>
+          <div class="field">
+            <label>Email Address</label>
+            <input type="email" id="email" placeholder="sarah@email.com"/>
+            <div class="field-error" id="emailError">Please enter a valid email address.</div>
+          </div>
+          <div class="field">
+            <label>Password</label>
+            <input type="password" id="password" placeholder="At least 8 characters" oninput="checkPassword(this.value)"/>
+            <div class="pw-strength">
+              <div class="pw-bar" id="pw1"></div>
+              <div class="pw-bar" id="pw2"></div>
+              <div class="pw-bar" id="pw3"></div>
+              <div class="pw-bar" id="pw4"></div>
+            </div>
+            <div class="pw-label" id="pwLabel">Enter a password</div>
+          </div>
+          <div class="field" style="margin-bottom:28px;">
+            <label>How did you hear about us?</label>
+            <select>
+              <option value="">Select one…</option>
+              <option>Podcast</option>
+              <option>Church</option>
+              <option>Military</option>
+              <option>Friend or Family</option>
+              <option>Social Media</option>
+              <option>Search / Google</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <button class="btn-primary" onclick="goTo(2)">
+            Create My Account
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <p style="text-align:center;font-size:13px;color:var(--ink3);margin-top:16px;">Already a member? <a href="#" style="color:var(--g);font-weight:500;">Sign in</a></p>
+        </div>
+      </div>
+
+      <!-- ── STEP 2: WELLNESS ASSESSMENT ── -->
+      <div class="screen" id="step2">
+        <div class="card-head">
+          <div class="step-eyebrow">Step 2 of 5 · Wellness Assessment</div>
+          <div class="step-title">Let's find your stage.</div>
+          <p class="step-sub">These questions help us connect you with the right community and resources from day one. There are no wrong answers.</p>
+        </div>
+        <div class="card-body">
+          <button class="btn-back" onclick="goTo(1)">← Back</button>
+
+          <div class="q-block">
+            <div class="q-text">1. How would you describe where you are right now?</div>
+            <div class="q-options">
+              <div class="q-opt" onclick="selectOpt(this,'q1','a')"><div class="q-opt-radio"></div>I'm in survival mode — just getting through each day</div>
+              <div class="q-opt" onclick="selectOpt(this,'q1','b')"><div class="q-opt-radio"></div>The dust is settling but I'm still finding my footing</div>
+              <div class="q-opt" onclick="selectOpt(this,'q1','c')"><div class="q-opt-radio"></div>I'm rebuilding and feeling more steady</div>
+              <div class="q-opt" onclick="selectOpt(this,'q1','d')"><div class="q-opt-radio"></div>I feel grounded and want to help others</div>
+            </div>
+          </div>
+
+          <div class="q-block">
+            <div class="q-text">2. How are you managing emotionally most days?</div>
+            <div class="q-options">
+              <div class="q-opt" onclick="selectOpt(this,'q2','a')"><div class="q-opt-radio"></div>Overwhelmed — I struggle to see a way forward</div>
+              <div class="q-opt" onclick="selectOpt(this,'q2','b')"><div class="q-opt-radio"></div>Up and down — some days are good, some really hard</div>
+              <div class="q-opt" onclick="selectOpt(this,'q2','c')"><div class="q-opt-radio"></div>More stable — I'm processing and healing</div>
+              <div class="q-opt" onclick="selectOpt(this,'q2','d')"><div class="q-opt-radio"></div>Mostly good — I have difficult moments but recover quickly</div>
+            </div>
+          </div>
+
+          <div class="q-block">
+            <div class="q-text">3. How long have you been solo parenting?</div>
+            <div class="q-options">
+              <div class="q-opt" onclick="selectOpt(this,'q3','a')"><div class="q-opt-radio"></div>Less than 6 months</div>
+              <div class="q-opt" onclick="selectOpt(this,'q3','b')"><div class="q-opt-radio"></div>6 months to 2 years</div>
+              <div class="q-opt" onclick="selectOpt(this,'q3','c')"><div class="q-opt-radio"></div>2 to 5 years</div>
+              <div class="q-opt" onclick="selectOpt(this,'q3','d')"><div class="q-opt-radio"></div>More than 5 years</div>
+            </div>
+          </div>
+
+          <div class="q-block">
+            <div class="q-text">4. What brought you to Solo Parent today?</div>
+            <div class="q-options">
+              <div class="q-opt" onclick="selectOpt(this,'q4','a')"><div class="q-opt-radio"></div>I'm in a crisis and need immediate support</div>
+              <div class="q-opt" onclick="selectOpt(this,'q4','b')"><div class="q-opt-radio"></div>I need people who understand what I'm going through</div>
+              <div class="q-opt" onclick="selectOpt(this,'q4','c')"><div class="q-opt-radio"></div>I want tools and resources to grow as a parent</div>
+              <div class="q-opt" onclick="selectOpt(this,'q4','d')"><div class="q-opt-radio"></div>I'm doing well and want to give back to others</div>
+            </div>
+          </div>
+
+          <div class="q-block" style="margin-bottom:28px;">
+            <div class="q-text">5. How old are your children? <span style="font-weight:400;color:var(--ink3);">(select all that apply)</span></div>
+            <div class="chips" id="ageChips">
+              <div class="chip" onclick="toggleChip(this)">Infant (0–1)</div>
+              <div class="chip" onclick="toggleChip(this)">Toddler (2–4)</div>
+              <div class="chip" onclick="toggleChip(this)">Elementary (5–10)</div>
+              <div class="chip" onclick="toggleChip(this)">Middle School (11–13)</div>
+              <div class="chip" onclick="toggleChip(this)">High School (14–18)</div>
+              <div class="chip" onclick="toggleChip(this)">Adult Children</div>
+            </div>
+          </div>
+
+          <button class="btn-primary" onclick="calcStage()">
+            See My Stage →
+          </button>
+        </div>
+      </div>
+
+      <!-- ── STEP 3: STAGE RESULT ── -->
+      <div class="screen" id="step3">
+        <div class="card-head">
+          <div class="step-eyebrow">Step 3 of 5 · Your Stage</div>
+          <div class="step-title">Here's where you are.</div>
+          <p class="step-sub">Your assessment helped us understand your journey. Everything inside the Society is designed to meet you right here.</p>
+        </div>
+        <div class="card-body">
+          <div class="stage-result" id="stageResult">
+            <!-- Populated by JS -->
+          </div>
+          <button class="btn-primary" onclick="goTo(4)" style="margin-top:8px;">
+            This is me — Continue →
+          </button>
+          <button class="btn-ghost" onclick="goTo(2)">Retake Assessment</button>
+        </div>
+      </div>
+
+      <!-- ── STEP 4: SOCIETY GUIDELINES ── -->
+      <div class="screen" id="step4">
+        <div class="card-head">
+          <div class="step-eyebrow">Step 4 of 5 · Community Agreement</div>
+          <div class="step-title">The Society guidelines.</div>
+          <p class="step-sub">This is a safe space built on trust. These principles keep it that way for everyone.</p>
+        </div>
+        <div class="card-body">
+          <button class="btn-back" onclick="goTo(3)">← Back</button>
+          <div class="guideline-list">
+            <div class="guideline-item">
+              <div class="guideline-ico">🤝</div>
+              <div class="guideline-text"><strong>Show up with honesty and grace.</strong>We're all at different stages. Speak your truth and extend the same kindness to others.</div>
+            </div>
+            <div class="guideline-item">
+              <div class="guideline-ico">🔒</div>
+              <div class="guideline-text"><strong>What's shared here, stays here.</strong>Stories shared in circles and discussions are held in confidence. This is a safe space — protect it.</div>
+            </div>
+            <div class="guideline-item">
+              <div class="guideline-ico">🚫</div>
+              <div class="guideline-text"><strong>No judgment, no unsolicited advice.</strong>We listen first. Advice is welcome only when asked for.</div>
+            </div>
+            <div class="guideline-item">
+              <div class="guideline-ico">💬</div>
+              <div class="guideline-text"><strong>Engage with intention.</strong>No spam, no self-promotion, no solicitation. Every interaction should add value to the community.</div>
+            </div>
+            <div class="guideline-item">
+              <div class="guideline-ico">🌱</div>
+              <div class="guideline-text"><strong>Give back when you're able.</strong>As you grow and heal, look for opportunities to encourage those who are a few steps behind you.</div>
+            </div>
+          </div>
+          <div class="agree-row" id="agreeRow" onclick="toggleAgree()">
+            <div class="agree-check" id="agreeCheck"></div>
+            <div class="agree-label">I have read and agree to the Solo Parent Society Community Guidelines. I understand that violations may result in removal from the community.</div>
+          </div>
+          <button class="btn-primary" id="agreeBtn" onclick="goTo(5)" style="margin-top:20px;" disabled>
+            I Agree — Continue →
+          </button>
+        </div>
+      </div>
+
+      <!-- ── STEP 5: PROFILE SETUP ── -->
+      <div class="screen" id="step5">
+        <div class="card-head">
+          <div class="step-eyebrow">Step 5 of 5 · Your Profile</div>
+          <div class="step-title">Set up your profile.</div>
+          <p class="step-sub">Help the community know who you are. You control what's public and what's private.</p>
+        </div>
+        <div class="card-body">
+          <button class="btn-back" onclick="goTo(4)">← Back</button>
+
+          <!-- Avatar -->
+          <div class="avatar-row">
+            <div class="avatar-circle" id="avatarCircle" onclick="document.getElementById('avatarInput').click()">
+              <span id="avatarEmoji">🧡</span>
+            </div>
+            <div class="avatar-info">
+              <strong>Profile Photo</strong>
+              <span>JPG, PNG or GIF · Max 5MB</span>
+              <button class="avatar-btn" onclick="document.getElementById('avatarInput').click()">Upload Photo</button>
+              <input type="file" id="avatarInput" accept="image/*" style="display:none;" onchange="previewAvatar(this)"/>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Display Name <span style="font-weight:400;color:var(--ink3);">(visible to others)</span></label>
+            <input type="text" placeholder="Sarah J."/>
+            <div class="field-hint">You can use your first name or a nickname — whatever feels comfortable.</div>
+          </div>
+
+          <div class="field">
+            <label>City / State <span style="font-weight:400;color:var(--ink3);">(optional)</span></label>
+            <input type="text" placeholder="Nashville, TN"/>
+          </div>
+
+          <div class="field">
+            <label>I became a solo parent by…</label>
+            <div class="chips">
+              <div class="chip" onclick="toggleChip(this)">Divorce</div>
+              <div class="chip" onclick="toggleChip(this)">Loss of Spouse</div>
+              <div class="chip" onclick="toggleChip(this)">Separation</div>
+              <div class="chip" onclick="toggleChip(this)">Never Married</div>
+              <div class="chip" onclick="toggleChip(this)">Choice</div>
+              <div class="chip" onclick="toggleChip(this)">Prefer Not to Say</div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Social handles <span style="font-weight:400;color:var(--ink3);">(optional · shown on your public profile)</span></label>
+            <div class="field-row" style="margin-bottom:0;">
+              <div style="position:relative;">
+                <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--ink3);">ig /</span>
+                <input type="text" placeholder="yourhandle" style="padding-left:40px;"/>
+              </div>
+              <div style="position:relative;">
+                <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--ink3);">fb /</span>
+                <input type="text" placeholder="yourhandle" style="padding-left:40px;"/>
+              </div>
+            </div>
+          </div>
+
+          <div class="field" style="margin-bottom:28px;">
+            <label>Notification Preferences</label>
+            <div class="notif-list">
+              <div class="notif-item">
+                <div class="notif-label"><strong>New Podcast Episodes</strong><span>Every Monday</span></div>
+                <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+              </div>
+              <div class="notif-item">
+                <div class="notif-label"><strong>Daily Check-In</strong><span>Each morning</span></div>
+                <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+              </div>
+              <div class="notif-item">
+                <div class="notif-label"><strong>Circle Reminders</strong><span>Before your circles</span></div>
+                <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+              </div>
+              <div class="notif-item">
+                <div class="notif-label"><strong>Events &amp; Town Halls</strong><span>Upcoming events</span></div>
+                <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+              </div>
+              <div class="notif-item">
+                <div class="notif-label"><strong>Discussion Replies</strong><span>When someone responds to you</span></div>
+                <div class="toggle" onclick="this.classList.toggle('on')"></div>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn-primary" onclick="finishOnboarding()">
+            Enter the Society →
+          </button>
+        </div>
+      </div>
+
+    </div><!-- /card -->
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<script>
+/* ── STATE ── */
+const answers = {q1:null,q2:null,q3:null,q4:null};
+let agreed = false;
+let currentStep = 1;
+
+/* ── NAVIGATION ── */
+function goTo(n) {
+  document.getElementById('step' + currentStep).classList.remove('active');
+  document.getElementById('step' + n).classList.add('active');
+  currentStep = n;
+  updateSidebar(n);
+  updateProgress(n);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function updateProgress(n) {
+  document.getElementById('progressFill').style.width = (n / 5 * 100) + '%';
+}
+
+function updateSidebar(n) {
+  document.querySelectorAll('.sstep').forEach(el => {
+    const s = parseInt(el.dataset.step);
+    el.classList.remove('active','done','pending');
+    if (s < n)  el.classList.add('done');
+    else if (s === n) el.classList.add('active');
+    else el.classList.add('pending');
+    // swap number to checkmark when done
+    const num = el.querySelector('.sstep-num');
+    num.textContent = s < n ? '✓' : s;
+  });
+}
+
+/* ── ASSESSMENT ── */
+function selectOpt(el, q, val) {
+  el.closest('.q-options').querySelectorAll('.q-opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  answers[q] = val;
+}
+
+function toggleChip(el) { el.classList.toggle('selected'); }
+
+function calcStage() {
+  // Score: a=triage, b=triage/recovery, c=recovery, d=wellness
+  const scores = {triage:0, recovery:0, wellness:0};
+  const map = {a:'triage', b:'recovery', c:'recovery', d:'wellness'};
+  Object.values(answers).forEach(v => {
+    if (v && map[v]) scores[map[v]]++;
+  });
+  // Time dimension from q3
+  if (answers.q3 === 'a') scores.triage++;
+  else if (answers.q3 === 'b') scores.recovery++;
+  else scores.wellness++;
+
+  let stage = 'recovery';
+  if (scores.triage >= scores.recovery && scores.triage >= scores.wellness) stage = 'triage';
+  else if (scores.wellness > scores.recovery) stage = 'wellness';
+
+  const stages = {
+    triage: {
+      emoji: '🛡️',
+      name: 'Triage',
+      badge: 'stage-triage',
+      desc: "You're in the thick of it right now — and that takes more courage than most people realize. The Society meets you here with immediate support, honest community, and one message: you are going to make it through this.",
+      info: "We'll connect you with Triage-focused circles, daily encouragement, and resources designed for exactly where you are. You don't have to figure out next month right now."
+    },
+    recovery: {
+      emoji: '🌤️',
+      name: 'Recovery',
+      badge: 'stage-recovery',
+      desc: "The hardest days are behind you, but the work of rebuilding is real. You're ready to move forward with intention — and the Society has the tools, community, and conversations to help you do just that.",
+      info: "You'll have access to Recovery-focused circles, the Society Pathway, and expert resources built to help you stabilize and grow. Progress over perfection, every time."
+    },
+    wellness: {
+      emoji: '🌿',
+      name: 'Wellness',
+      badge: 'stage-wellness',
+      desc: "You've found your footing. Life isn't always easy, but you're steady — and your story is becoming a lifeline for others. The Society is where you give back and keep growing.",
+      info: "Wellness members often become Circle hosts and community leaders. Your lived experience is one of the most powerful things in this community."
+    }
+  };
+
+  const s = stages[stage];
+  document.getElementById('stageResult').innerHTML = `
+    <div class="stage-badge ${s.badge}">${s.emoji} ${s.name}</div>
+    <div class="stage-emoji">${s.emoji}</div>
+    <div class="stage-name">You're in ${s.name}.</div>
+    <p class="stage-desc">${s.desc}</p>
+    <div class="stage-info">
+      <div class="stage-info-ico">💡</div>
+      <p><strong>What this means inside the Society:</strong> ${s.info}</p>
+    </div>
+  `;
+  goTo(3);
+}
+
+/* ── GUIDELINES ── */
+function toggleAgree() {
+  agreed = !agreed;
+  document.getElementById('agreeCheck').classList.toggle('checked', agreed);
+  document.getElementById('agreeBtn').disabled = !agreed;
+}
+
+/* ── PASSWORD STRENGTH ── */
+function checkPassword(val) {
+  const bars = [document.getElementById('pw1'),document.getElementById('pw2'),document.getElementById('pw3'),document.getElementById('pw4')];
+  const label = document.getElementById('pwLabel');
+  bars.forEach(b => b.className = 'pw-bar');
+  if (!val) { label.textContent = 'Enter a password'; return; }
+  let score = 0;
+  if (val.length >= 8) score++;
+  if (/[A-Z]/.test(val)) score++;
+  if (/[0-9]/.test(val)) score++;
+  if (/[^A-Za-z0-9]/.test(val)) score++;
+  const labels = ['','Weak','Fair','Good','Strong'];
+  const cls = ['','weak','fair','strong','strong'];
+  for (let i=0;i<score;i++) bars[i].classList.add(cls[score]);
+  label.textContent = labels[score] || 'Enter a password';
+}
+
+/* ── AVATAR PREVIEW ── */
+function previewAvatar(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const circle = document.getElementById('avatarCircle');
+    circle.innerHTML = `<img src="${e.target.result}" alt="Avatar"/>`;
+  };
+  reader.readAsDataURL(file);
+}
+
+/* ── FINISH ── */
+function finishOnboarding() {
+  document.getElementById('welcomeOverlay').classList.add('show');
+}
+function closeWelcome() {
+  document.getElementById('welcomeOverlay').classList.remove('show');
+  // In a real app, redirect to home screen
+  alert('🎉 Welcome to the Society! (Home screen coming next.)');
+}
+</script>
+</body>
+</html>
