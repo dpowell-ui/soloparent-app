@@ -682,5 +682,18 @@ document.querySelectorAll('.ifilter').forEach(el => {
   });
 });
 </script>
+
+<script>
+function toggleProfileMenu() {
+  const menu = document.getElementById('profileMenu');
+  menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+}
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.nav-right')) {
+    const menu = document.getElementById('profileMenu');
+    if (menu) menu.style.display = 'none';
+  }
+});
+</script>
 </body>
 </html>

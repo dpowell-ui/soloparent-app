@@ -656,5 +656,18 @@ body{font-family:var(--font);background:var(--fog);color:var(--ink);min-height:1
   </main>
 </div>
 
+
+<script>
+function toggleProfileMenu() {
+  const menu = document.getElementById('profileMenu');
+  menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+}
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.nav-right')) {
+    const menu = document.getElementById('profileMenu');
+    if (menu) menu.style.display = 'none';
+  }
+});
+</script>
 </body>
 </html>
