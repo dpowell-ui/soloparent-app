@@ -391,9 +391,16 @@ body{font-family:var(--font);background:var(--fog);color:var(--ink);min-height:1
     <button class="nav-tab" onclick="location.href='soloparent-resources.html'">Resources</button>
     <button class="nav-tab">Events</button>
   </div>
-  <div class="nav-right">
-    <button class="nav-notif">🔔<div class="notif-dot"></div></button>
-    <div class="nav-avatar">S</div>
+  <div class="nav-right" style="position:relative;">
+    <button class="nav-notif" onclick="location.href='soloparent-profile.html?tab=personal'">🔔<div class="notif-dot"></div></button>
+    <div class="nav-avatar" onclick="toggleProfileMenu()" style="cursor:pointer;">S</div>
+    <div id="profileMenu" style="display:none;position:absolute;top:44px;right:0;background:#fff;border-radius:14px;box-shadow:0 8px 40px rgba(0,0,0,.14);padding:8px;min-width:180px;z-index:200;border:1px solid rgba(0,0,0,.06);">
+      <div onclick="location.href='soloparent-profile.html'" style="padding:10px 14px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;color:#1D1D1F;display:flex;align-items:center;gap:10px;" onmouseover="this.style.background='#F5F5F7'" onmouseout="this.style.background='none'">👤 My Profile</div>
+      <div onclick="location.href='soloparent-profile.html?tab=personal'" style="padding:10px 14px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;color:#1D1D1F;display:flex;align-items:center;gap:10px;" onmouseover="this.style.background='#F5F5F7'" onmouseout="this.style.background='none'">📬 Inbox <span style="margin-left:auto;background:#FF3B30;color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:980px;">1</span></div>
+      <div onclick="location.href='soloparent-profile.html?tab=settings'" style="padding:10px 14px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;color:#1D1D1F;display:flex;align-items:center;gap:10px;" onmouseover="this.style.background='#F5F5F7'" onmouseout="this.style.background='none'">⚙️ Settings</div>
+      <div style="height:1px;background:rgba(0,0,0,.06);margin:6px 0;"></div>
+      <div onclick="location.href='soloparent-app.html'" style="padding:10px 14px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;color:#FF3B30;display:flex;align-items:center;gap:10px;" onmouseover="this.style.background='#FFF0EE'" onmouseout="this.style.background='none'">🚪 Log Out</div>
+    </div>
   </div>
 </nav>
 
