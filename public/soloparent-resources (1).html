@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Solo Parent Society — Resources</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --g:#34C759;--gd:#248A3D;--gp:#E8F8EC;--gm:rgba(52,199,89,.12);
+  --ink:#1D1D1F;--ink2:#3A3A3C;--ink3:#6E6E73;
+  --fog:#F5F5F7;--white:#fff;
+  --red:#FF3B30;--amber:#FF9F0A;--blue:#007AFF;--purple:#AF52DE;--teal:#32ADE6;
+  --font:'Inter',-apple-system,sans-serif;
+  --nav:64px;
+  --ease:cubic-bezier(.4,0,.2,1);
+  --sh:0 2px 16px rgba(0,0,0,.06);
+  --sh2:0 8px 40px rgba(0,0,0,.1);
+  --r:16px;
+}
+html{-webkit-font-smoothing:antialiased;}
+body{font-family:var(--font);background:var(--fog);color:var(--ink);min-height:100vh;}
+
+/* ── NAV ── */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  height:var(--nav);
+  background:rgba(255,255,255,.85);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(0,0,0,.06);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;
+}
+.nav-logo{height:28px;}
+.nav-center{display:flex;align-items:center;gap:4px;}
+.nav-tab{padding:7px 14px;border-radius:980px;font-size:13px;font-weight:500;color:var(--ink3);cursor:pointer;transition:all .18s;border:none;background:none;font-family:var(--font);}
+.nav-tab:hover{background:var(--fog);color:var(--ink);}
+.nav-tab.active{background:var(--ink);color:#fff;}
+.nav-right{display:flex;align-items:center;gap:10px;}
+.nav-avatar{width:32px;height:32px;border-radius:50%;background:var(--gp);border:2px solid var(--g);display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;}
+.nav-notif{width:32px;height:32px;border-radius:50%;background:var(--fog);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;position:relative;}
+.notif-dot{position:absolute;top:5px;right:5px;width:8px;height:8px;border-radius:50%;background:var(--red);border:1.5px solid #fff;}
+
+/* ── LAYOUT ── */
+.app{display:flex;padding-top:var(--nav);min-height:100vh;}
+
+/* ── SIDEBAR ── */
+.sidebar{width:220px;flex-shrink:0;position:fixed;top:var(--nav);left:0;bottom:0;padding:20px 12px;overflow-y:auto;border-right:1px solid rgba(0,0,0,.06);background:rgba(255,255,255,.7);backdrop-filter:blur(20px);}
+.sidebar-section{margin-bottom:24px;}
+.sidebar-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);padding:0 10px;margin-bottom:6px;}
+.sidebar-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:10px;font-size:13px;font-weight:500;color:var(--ink2);cursor:pointer;transition:all .18s;border:none;background:none;width:100%;text-align:left;font-family:var(--font);}
+.sidebar-item:hover{background:var(--fog);}
+.sidebar-item.active{background:var(--gm);color:var(--gd);}
+.si-ico{font-size:1rem;flex-shrink:0;width:20px;text-align:center;}
+.si-badge{margin-left:auto;background:var(--red);color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:980px;}
+
+/* ── MAIN ── */
+.main{margin-left:220px;flex:1;padding:28px 32px 48px;}
+
+/* ── PAGE HEADER ── */
+.page-header{margin-bottom:24px;}
+.page-title{font-size:2rem;font-weight:700;letter-spacing:-.04em;color:var(--ink);margin-bottom:4px;}
+.page-sub{font-size:15px;font-weight:300;color:var(--ink3);}
+
+/* ── SECTION TABS ── */
+.section-tabs{display:flex;align-items:center;gap:4px;background:var(--white);border-radius:12px;padding:5px;margin-bottom:28px;box-shadow:var(--sh);width:fit-content;}
+.stab{padding:9px 20px;border-radius:9px;font-size:13px;font-weight:500;color:var(--ink3);cursor:pointer;transition:all .2s;border:none;background:none;font-family:var(--font);}
+.stab:hover{color:var(--ink);}
+.stab.active{background:var(--ink);color:#fff;}
+
+/* ── PANELS ── */
+.panel{display:none;}
+.panel.active{display:block;}
+
+/* ════════════════════
+   PODCAST
+════════════════════ */
+/* Featured player */
+.pod-hero{
+  background:var(--ink);border-radius:20px;
+  padding:36px 40px;margin-bottom:24px;
+  display:flex;gap:32px;align-items:center;
+  position:relative;overflow:hidden;
+}
+.pod-hero-bg{position:absolute;inset:0;background:url('https://soloparent.org/wp-content/uploads/2025/03/resourcesheader-1024x576.jpg') center/cover;opacity:.08;}
+.pod-hero-art{
+  width:140px;height:140px;border-radius:16px;
+  object-fit:cover;flex-shrink:0;position:relative;z-index:1;
+  box-shadow:0 8px 32px rgba(0,0,0,.4);
+}
+.pod-hero-content{flex:1;position:relative;z-index:1;}
+.pod-hero-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(52,199,89,.12);color:#30D158;border:1px solid rgba(52,199,89,.2);padding:3px 10px;border-radius:980px;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px;}
+.pod-hero-ep{font-size:11px;color:rgba(255,255,255,.35);margin-bottom:6px;}
+.pod-hero-title{font-size:1.5rem;font-weight:700;letter-spacing:-.03em;color:#fff;margin-bottom:8px;line-height:1.2;}
+.pod-hero-desc{font-size:13px;font-weight:300;color:rgba(255,255,255,.45);line-height:1.65;margin-bottom:20px;}
+.pod-controls{display:flex;align-items:center;gap:14px;}
+.pod-play{width:48px;height:48px;border-radius:50%;background:var(--g);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .22s;flex-shrink:0;}
+.pod-play:hover{background:var(--gd);transform:scale(1.05);}
+.pod-tri{width:0;height:0;border-top:9px solid transparent;border-bottom:9px solid transparent;border-left:15px solid #fff;margin-left:3px;}
+.pod-skip{background:none;border:none;cursor:pointer;color:rgba(255,255,255,.4);font-size:11px;font-weight:500;font-family:var(--font);transition:color .18s;}
+.pod-skip:hover{color:rgba(255,255,255,.8);}
+.pod-bar-wrap{flex:1;display:flex;flex-direction:column;gap:6px;}
+.pod-bar{height:3px;background:rgba(255,255,255,.1);border-radius:2px;position:relative;cursor:pointer;}
+.pod-fill{width:35%;height:100%;background:var(--g);border-radius:2px;}
+.pod-dot{position:absolute;top:50%;left:35%;transform:translate(-50%,-50%);width:12px;height:12px;border-radius:50%;background:var(--g);border:2px solid var(--ink);}
+.pod-times{display:flex;justify-content:space-between;font-size:10px;color:rgba(255,255,255,.3);}
+
+/* Episode list */
+.ep-filters{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
+.ep-filter{padding:6px 14px;border-radius:980px;border:1.5px solid rgba(0,0,0,.1);font-size:12px;font-weight:500;color:var(--ink2);cursor:pointer;transition:all .18s;background:var(--white);}
+.ep-filter:hover{border-color:var(--g);}
+.ep-filter.active{background:var(--ink);color:#fff;border-color:var(--ink);}
+.ep-search{
+  flex:1;min-width:180px;
+  padding:8px 14px;border-radius:980px;
+  border:1.5px solid rgba(0,0,0,.1);
+  font-size:13px;font-family:var(--font);color:var(--ink);
+  outline:none;background:var(--white);
+}
+.ep-search:focus{border-color:var(--g);}
+
+.ep-card{
+  background:var(--white);border-radius:var(--r);
+  padding:18px 20px;box-shadow:var(--sh);
+  margin-bottom:10px;display:flex;gap:16px;
+  align-items:center;cursor:pointer;transition:all .22s;
+}
+.ep-card:hover{box-shadow:var(--sh2);}
+.ep-card.playing{border:1.5px solid var(--g);background:var(--gp);}
+.ep-num{
+  width:48px;height:48px;border-radius:12px;
+  background:var(--fog);display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;color:var(--ink3);flex-shrink:0;
+  transition:all .2s;
+}
+.ep-card.playing .ep-num{background:var(--g);color:#fff;}
+.ep-info{flex:1;min-width:0;}
+.ep-title{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:3px;letter-spacing:-.01em;}
+.ep-meta{font-size:11px;color:var(--ink3);}
+.ep-actions{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.ep-play-btn{
+  width:36px;height:36px;border-radius:50%;
+  background:var(--g);border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .18s;
+}
+.ep-play-btn:hover{background:var(--gd);}
+.ep-tri{width:0;height:0;border-top:6px solid transparent;border-bottom:6px solid transparent;border-left:10px solid #fff;margin-left:2px;}
+.ep-save{background:none;border:none;cursor:pointer;font-size:18px;color:var(--ink3);transition:color .18s;}
+.ep-save:hover{color:var(--g);}
+
+/* ════════════════════
+   MEDITATIONS
+════════════════════ */
+.med-section-title{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);margin-bottom:14px;margin-top:28px;}
+.med-section-title:first-child{margin-top:0;}
+.med-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin-bottom:8px;}
+.med-card{
+  background:var(--white);border-radius:var(--r);
+  box-shadow:var(--sh);overflow:hidden;
+  cursor:pointer;transition:all .22s;
+}
+.med-card:hover{transform:translateY(-2px);box-shadow:var(--sh2);}
+.med-thumb{
+  height:120px;display:flex;align-items:center;justify-content:center;
+  font-size:2.5rem;position:relative;overflow:hidden;
+}
+.med-thumb-soundmind{background:linear-gradient(135deg,#1D1D1F,#2D2D2F);}
+.med-thumb-sleep{background:linear-gradient(135deg,#0F1B4A,#1A2E7A);}
+.med-play-overlay{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  background:rgba(0,0,0,.2);opacity:0;transition:opacity .2s;
+}
+.med-card:hover .med-play-overlay{opacity:1;}
+.med-play-circle{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center;}
+.med-body{padding:16px 18px 18px;}
+.med-tag{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;}
+.med-tag-soundmind{color:var(--g);}
+.med-tag-sleep{color:var(--blue);}
+.med-name{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:4px;letter-spacing:-.01em;}
+.med-desc{font-size:12px;font-weight:300;color:var(--ink3);line-height:1.55;}
+.med-footer{display:flex;align-items:center;justify-content:space-between;margin-top:12px;}
+.med-duration{font-size:11px;color:var(--ink3);}
+.med-fav{background:none;border:none;cursor:pointer;font-size:16px;}
+
+/* ════════════════════
+   COURSES
+════════════════════ */
+.course-card{
+  background:var(--white);border-radius:var(--r);
+  box-shadow:var(--sh);overflow:hidden;
+  display:flex;margin-bottom:14px;
+  cursor:pointer;transition:all .22s;
+}
+.course-card:hover{box-shadow:var(--sh2);}
+.course-thumb{
+  width:160px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:2.5rem;
+}
+.ct-green{background:linear-gradient(135deg,var(--gd),var(--g));}
+.ct-blue{background:linear-gradient(135deg,#0057B8,var(--blue));}
+.ct-purple{background:linear-gradient(135deg,#7B2FBE,var(--purple));}
+.ct-amber{background:linear-gradient(135deg,#B06000,var(--amber));}
+.course-body{flex:1;padding:24px;}
+.course-tags{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;}
+.ctag{font-size:10px;font-weight:600;padding:3px 9px;border-radius:980px;letter-spacing:.03em;}
+.ctag-free{background:var(--gm);color:var(--gd);}
+.ctag-weeks{background:var(--fog);color:var(--ink3);}
+.ctag-new{background:#FFF5E5;color:#B06000;}
+.course-title{font-size:17px;font-weight:700;letter-spacing:-.02em;color:var(--ink);margin-bottom:6px;}
+.course-desc{font-size:13px;font-weight:300;color:var(--ink2);line-height:1.65;margin-bottom:16px;}
+.course-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.course-progress-wrap{flex:1;}
+.course-progress-label{display:flex;justify-content:space-between;font-size:11px;color:var(--ink3);margin-bottom:5px;}
+.course-bar{height:4px;background:var(--fog);border-radius:2px;overflow:hidden;}
+.course-fill{height:100%;background:var(--g);border-radius:2px;}
+.course-btn{padding:9px 20px;border-radius:980px;font-size:13px;font-weight:600;font-family:var(--font);cursor:pointer;border:none;transition:all .18s;white-space:nowrap;}
+.course-btn-start{background:var(--g);color:#fff;}
+.course-btn-start:hover{background:var(--gd);}
+.course-btn-continue{background:var(--ink);color:#fff;}
+.course-btn-continue:hover{background:#000;}
+.course-btn-enroll{background:var(--fog);color:var(--ink2);}
+.course-btn-enroll:hover{background:#ebebeb;}
+
+/* ════════════════════
+   ARTICLES
+════════════════════ */
+.articles-layout{display:grid;grid-template-columns:1fr 280px;gap:20px;align-items:start;}
+.article-card{
+  background:var(--white);border-radius:var(--r);
+  box-shadow:var(--sh);overflow:hidden;
+  margin-bottom:12px;cursor:pointer;transition:all .22s;
+  display:flex;
+}
+.article-card:hover{box-shadow:var(--sh2);}
+.article-img{
+  width:120px;flex-shrink:0;
+  background:var(--fog);object-fit:cover;
+}
+.article-body{flex:1;padding:18px 20px;}
+.article-tags{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap;}
+.atag{font-size:10px;font-weight:600;padding:3px 9px;border-radius:980px;letter-spacing:.03em;}
+.atag-triage{background:#FFF0EE;color:#D63B2B;}
+.atag-recovery{background:var(--gm);color:var(--gd);}
+.atag-wellness{background:#E5F5FB;color:#0071A4;}
+.atag-general{background:var(--fog);color:var(--ink3);}
+.article-title{font-size:15px;font-weight:600;color:var(--ink);margin-bottom:6px;letter-spacing:-.01em;line-height:1.3;}
+.article-excerpt{font-size:13px;font-weight:300;color:var(--ink2);line-height:1.6;margin-bottom:10px;}
+.article-meta{font-size:11px;color:var(--ink3);display:flex;align-items:center;gap:8px;}
+
+/* ════════════════════
+   ARCHIVE
+════════════════════ */
+.archive-search-bar{
+  display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;
+}
+.archive-search{
+  flex:1;min-width:240px;
+  padding:12px 18px;border-radius:980px;
+  border:1.5px solid rgba(0,0,0,.1);
+  font-size:14px;font-family:var(--font);color:var(--ink);
+  outline:none;background:var(--white);
+}
+.archive-search:focus{border-color:var(--g);box-shadow:0 0 0 3px rgba(52,199,89,.1);}
+.archive-btn{padding:12px 20px;border-radius:980px;background:var(--g);color:#fff;border:none;font-size:14px;font-weight:600;font-family:var(--font);cursor:pointer;}
+
+.archive-tags{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.atopic{padding:7px 14px;border-radius:980px;border:1.5px solid rgba(0,0,0,.1);font-size:12px;font-weight:500;color:var(--ink2);cursor:pointer;transition:all .18s;background:var(--white);}
+.atopic:hover{border-color:var(--g);color:var(--gd);}
+.atopic.active{background:var(--ink);color:#fff;border-color:var(--ink);}
+
+.archive-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;}
+.archive-card{
+  background:var(--white);border-radius:var(--r);
+  box-shadow:var(--sh);overflow:hidden;
+  cursor:pointer;transition:all .22s;
+}
+.archive-card:hover{transform:translateY(-2px);box-shadow:var(--sh2);}
+.archive-thumb{
+  height:100px;display:flex;align-items:center;justify-content:center;
+  font-size:2rem;
+}
+.at-green{background:var(--gp);}
+.at-blue{background:#E5F0FF;}
+.at-purple{background:#F5EEFF;}
+.at-amber{background:#FFF5E5;}
+.archive-body{padding:16px 18px;}
+.archive-type{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);margin-bottom:5px;}
+.archive-title{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:4px;letter-spacing:-.01em;}
+.archive-meta{font-size:11px;color:var(--ink3);}
+.archive-topic-tags{display:flex;gap:4px;margin-top:8px;flex-wrap:wrap;}
+.att{font-size:10px;font-weight:500;padding:2px 8px;border-radius:980px;background:var(--fog);color:var(--ink3);}
+
+/* ── SHARED ── */
+.section-divider{height:1px;background:rgba(0,0,0,.06);margin:28px 0;}
+.sidebar-widget{background:var(--white);border-radius:var(--r);box-shadow:var(--sh);margin-bottom:14px;overflow:hidden;}
+.sw-head{padding:16px 18px 12px;border-bottom:1px solid rgba(0,0,0,.05);}
+.sw-title{font-size:13px;font-weight:600;color:var(--ink);}
+.sw-body{padding:14px 18px 16px;}
+.sw-item{display:flex;gap:10px;padding:7px 0;border-bottom:1px solid rgba(0,0,0,.04);cursor:pointer;}
+.sw-item:last-child{border:none;}
+.sw-ico{font-size:1.1rem;flex-shrink:0;}
+.sw-text{font-size:12px;color:var(--ink2);line-height:1.5;}
+.sw-sub{font-size:11px;color:var(--ink3);}
+
+/* ── ANIM ── */
+.fade-in{animation:fadeUp .35s var(--ease) both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .sidebar{display:none;}
+  .main{margin-left:0;padding:20px 16px 40px;}
+  .articles-layout{grid-template-columns:1fr;}
+  .pod-hero{flex-direction:column;}
+  .pod-hero-art{width:100%;height:180px;border-radius:12px;}
+  .course-thumb{width:100px;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <img class="nav-logo" src="https://soloparent.org/wp-content/uploads/2025/03/Solo-Parent-Logo-RGB-Color-300x122.png" alt="Solo Parent"/>
+  <div class="nav-center">
+    <button class="nav-tab" onclick="location.href='soloparent-home.html'">Home</button>
+    <button class="nav-tab" onclick="location.href='soloparent-community.html'">Community</button>
+    <button class="nav-tab active" onclick="location.href='soloparent-resources.html'">Resources</button>
+    <button class="nav-tab">Events</button>
+  </div>
+  <div class="nav-right">
+    <button class="nav-notif">🔔<div class="notif-dot"></div></button>
+    <div class="nav-avatar">S</div>
+  </div>
+</nav>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Main</div>
+      <button class="sidebar-item"><span class="si-ico">🏠</span> Home</button>
+      <button class="sidebar-item"><span class="si-ico">👥</span> Community</button>
+      <button class="sidebar-item"><span class="si-ico">💬</span> Discussions <span class="si-badge">3</span></button>
+      <button class="sidebar-item"><span class="si-ico">📅</span> Events</button>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Resources</div>
+      <button class="sidebar-item active"><span class="si-ico">🎙️</span> Podcast</button>
+      <button class="sidebar-item"><span class="si-ico">📖</span> Growth Guide</button>
+      <button class="sidebar-item"><span class="si-ico">🎓</span> Courses</button>
+      <button class="sidebar-item"><span class="si-ico">🧘</span> Meditations</button>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">My Profile</div>
+      <button class="sidebar-item"><span class="si-ico">👤</span> Profile</button>
+      <button class="sidebar-item"><span class="si-ico">📬</span> Inbox <span class="si-badge">1</span></button>
+      <button class="sidebar-item"><span class="si-ico">⚙️</span> Settings</button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <div class="page-header fade-in">
+      <div class="page-title">Resources</div>
+      <p class="page-sub">Everything you need — focused on this month, searchable for every season.</p>
+    </div>
+
+    <div class="section-tabs fade-in">
+      <button class="stab active" onclick="switchTab('podcast')">🎙️ Podcast</button>
+      <button class="stab" onclick="switchTab('meditations')">🧘 Meditations</button>
+      <button class="stab" onclick="switchTab('courses')">🎓 Courses</button>
+      <button class="stab" onclick="switchTab('articles')">📄 Articles</button>
+      <button class="stab" onclick="switchTab('archive')">🗂️ Archive</button>
+    </div>
+
+    <!-- ══ PODCAST ══ -->
+    <div class="panel active" id="panel-podcast">
+
+      <!-- Hero Player -->
+      <div class="pod-hero fade-in">
+        <div class="pod-hero-bg"></div>
+        <img class="pod-hero-art" src="https://soloparent.org/wp-content/uploads/2026/01/2025_SP_LMMockups-1024x1024.png" alt="Podcast"/>
+        <div class="pod-hero-content">
+          <div class="pod-hero-tag">🎙️ Now Playing</div>
+          <div class="pod-hero-ep">Episode 312 · March 3, 2026 · 48 min</div>
+          <div class="pod-hero-title">Who's In Your Corner?</div>
+          <p class="pod-hero-desc">Robert Beeson on rebuilding a support system after solo parenting strips one away — and why your kids need you to actually do it.</p>
+          <div class="pod-controls">
+            <button class="pod-skip">⟨⟨ 15s</button>
+            <button class="pod-play"><div class="pod-tri"></div></button>
+            <button class="pod-skip">15s ⟩⟩</button>
+            <div class="pod-bar-wrap">
+              <div class="pod-bar">
+                <div class="pod-fill"></div>
+                <div class="pod-dot"></div>
+              </div>
+              <div class="pod-times"><span>17:02</span><span>48:14</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;">
+        <div class="ep-filters">
+          <div class="ep-filter active">All</div>
+          <div class="ep-filter">This Month</div>
+          <div class="ep-filter">Triage</div>
+          <div class="ep-filter">Recovery</div>
+          <div class="ep-filter">Wellness</div>
+        </div>
+        <input class="ep-search" placeholder="🔍 Search 500+ episodes…"/>
+      </div>
+
+      <div class="ep-card playing fade-in">
+        <div class="ep-num">312</div>
+        <div class="ep-info">
+          <div class="ep-title">Who's In Your Corner?</div>
+          <div class="ep-meta">Mar 3, 2026 · 48 min · Rebuilding Support</div>
+        </div>
+        <div class="ep-actions">
+          <button class="ep-save">🔖</button>
+          <button class="ep-play-btn"><div class="ep-tri"></div></button>
+        </div>
+      </div>
+
+      <div class="ep-card fade-in">
+        <div class="ep-num">311</div>
+        <div class="ep-info">
+          <div class="ep-title">When Your Kids See You Struggle</div>
+          <div class="ep-meta">Feb 24, 2026 · 41 min · Parenting</div>
+        </div>
+        <div class="ep-actions">
+          <button class="ep-save">🔖</button>
+          <button class="ep-play-btn"><div class="ep-tri"></div></button>
+        </div>
+      </div>
+
+      <div class="ep-card fade-in">
+        <div class="ep-num">310</div>
+        <div class="ep-info">
+          <div class="ep-title">The Comparison Trap — And How to Get Out</div>
+          <div class="ep-meta">Feb 17, 2026 · 37 min · Mental Health</div>
+        </div>
+        <div class="ep-actions">
+          <button class="ep-save">🔖</button>
+          <button class="ep-play-btn"><div class="ep-tri"></div></button>
+        </div>
+      </div>
+
+      <div class="ep-card fade-in">
+        <div class="ep-num">309</div>
+        <div class="ep-info">
+          <div class="ep-title">Making Peace with a Different Kind of Family</div>
+          <div class="ep-meta">Feb 10, 2026 · 44 min · Identity</div>
+        </div>
+        <div class="ep-actions">
+          <button class="ep-save">🔖</button>
+          <button class="ep-play-btn"><div class="ep-tri"></div></button>
+        </div>
+      </div>
+
+      <div class="ep-card fade-in">
+        <div class="ep-num">308</div>
+        <div class="ep-info">
+          <div class="ep-title">Finances After Divorce — Practical Steps to Stability</div>
+          <div class="ep-meta">Feb 3, 2026 · 52 min · Finances</div>
+        </div>
+        <div class="ep-actions">
+          <button class="ep-save">🔖</button>
+          <button class="ep-play-btn"><div class="ep-tri"></div></button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ══ MEDITATIONS ══ -->
+    <div class="panel" id="panel-meditations">
+
+      <div class="med-section-title fade-in">🧠 Sound Mind Set</div>
+      <div class="med-grid fade-in">
+        <div class="med-card">
+          <div class="med-thumb med-thumb-soundmind">
+            🧠
+            <div class="med-play-overlay"><div class="med-play-circle">▶</div></div>
+          </div>
+          <div class="med-body">
+            <div class="med-tag med-tag-soundmind">Sound Mind Set</div>
+            <div class="med-name">Morning Reset</div>
+            <div class="med-desc">Start the day grounded before the kids wake up.</div>
+            <div class="med-footer"><span class="med-duration">8 min</span><button class="med-fav">🤍</button></div>
+          </div>
+        </div>
+        <div class="med-card">
+          <div class="med-thumb med-thumb-soundmind">
+            🌬️
+            <div class="med-play-overlay"><div class="med-play-circle">▶</div></div>
+          </div>
+          <div class="med-body">
+            <div class="med-tag med-tag-soundmind">Sound Mind Set</div>
+            <div class="med-name">Letting Go of Control</div>
+            <div class="med-desc">A 10-minute guided release for overwhelmed parents.</div>
+            <div class="med-footer"><span class="med-duration">10 min</span><button class="med-fav">❤️</button></div>
+          </div>
+        </div>
+        <div class="med-card">
+          <div class="med-thumb med-thumb-soundmind">
+            💪
+            <div class="med-play-overlay"><div class="med-play-circle">▶</div></div>
+          </div>
+          <div class="med-body">
+            <div class="med-tag med-tag-soundmind">Sound Mind Set</div>
+            <div class="med-name">You're Enough</div>
+            <div class="med-desc">An affirmation meditation for the days you doubt yourself.</div>
+            <div class="med-footer"><span class="med-duration">12 min</span><button class="med-fav">🤍</button></div>
+          </div>
+        </div>
+        <div class="med-card">
+          <div class="med-thumb med-thumb-soundmind">
+            🤝
+            <div class="med-play-overlay"><div class="med-play-circle">▶</div></div>
+          </div>
+          <div class="med-body">
+            <div class="med-tag med-tag-soundmind">Sound Mind Set</div>
+            <div class="med-name">Rebuilding Trust</div>
+            <div class="med-desc">A guided meditation for healing after loss or betrayal.</div>
+            <div class="med-footer"><span class="med-duration">15 min</span><button class="med-fav">🤍</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <div class="med-section-title fade-in">🌙 Sleep</div>
+      <div class="med-grid fade-in">
+        <div class="med-card">
+          <div class="med-thumb med-thumb-sleep">
+            🌙
+            <div class="med-play-overlay"><div class="med-play-circle">▶</div></div>
+          </div>
+          <div class="med-body">
+            <div class="med-tag med-tag-sleep">Sleep</div>
+            <div class="med-name">Wind Down for Single Parents</div>
+            <div class="med-desc">Release the weight of the day before you sleep.</div>
+            <div class="med-footer"><span class="med-duration">20 min</span><button class="med-fav">❤️</button></div>
+          </div>
+        </div>
+        <div class="med-card">
+          <div class="med-thumb med-thumb-sleep">
+            ⭐
+            <div class="med-play-overlay"><div class="med-play-circle">▶</div></div>
+          </div>
+          <div class="med-body">
+            <div class="med-tag med-tag-sleep">Sleep</div>
+            <div class="med-name">Peaceful Rest Body Scan</div>
+            <div class="med-desc">A slow body scan to quiet anxious thoughts at night.</div>
+            <div class="med-footer"><span class="med-duration">25 min</span><button class="med-fav">🤍</button></div>
+          </div>
+        </div>
+        <div class="med-card">
+          <div class="med-thumb med-thumb-sleep">
+            🌊
+            <div class="med-play-overlay"><div class="med-play-circle">▶</div></div>
+          </div>
+          <div class="med-body">
+            <div class="med-tag med-tag-sleep">Sleep</div>
+            <div class="med-name">Deep Rest for the Exhausted Parent</div>
+            <div class="med-desc">You've done enough today. Let everything go.</div>
+            <div class="med-footer"><span class="med-duration">30 min</span><button class="med-fav">🤍</button></div>
+          </div>
+        </div>
+        <div class="med-card">
+          <div class="med-thumb med-thumb-sleep">
+            ☁️
+            <div class="med-play-overlay"><div class="med-play-circle">▶</div></div>
+          </div>
+          <div class="med-body">
+            <div class="med-tag med-tag-sleep">Sleep</div>
+            <div class="med-name">Kids Asleep, You're Next</div>
+            <div class="med-desc">A 10-minute bedtime meditation for when they finally sleep.</div>
+            <div class="med-footer"><span class="med-duration">10 min</span><button class="med-fav">🤍</button></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ══ COURSES ══ -->
+    <div class="panel" id="panel-courses">
+
+      <div class="course-card fade-in">
+        <div class="course-thumb ct-green">🌱</div>
+        <div class="course-body">
+          <div class="course-tags">
+            <span class="ctag ctag-free">Always Free</span>
+            <span class="ctag ctag-weeks">4 Habits · Self-Paced</span>
+            <span class="ctag ctag-new">Featured</span>
+          </div>
+          <div class="course-title">The 4 Habits of a Healthy Solo Parent</div>
+          <p class="course-desc">The foundational course of the Society. Four evidence-backed habits that stabilize your home, reduce stress, and help your kids thrive — no matter what stage you're in.</p>
+          <div class="course-footer">
+            <div class="course-progress-wrap">
+              <div class="course-progress-label"><span>Your progress</span><span>Lesson 3 of 8</span></div>
+              <div class="course-bar"><div class="course-fill" style="width:37%;"></div></div>
+            </div>
+            <button class="course-btn course-btn-continue">Continue →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="course-card fade-in">
+        <div class="course-thumb ct-blue">💼</div>
+        <div class="course-body">
+          <div class="course-tags">
+            <span class="ctag ctag-free">Always Free</span>
+            <span class="ctag ctag-weeks">6 Weeks · Self-Paced</span>
+          </div>
+          <div class="course-title">Financial Foundations for Solo Parents</div>
+          <p class="course-desc">Practical steps to stabilize your finances after major life change — budgeting, child support navigation, building a safety net, and long-term planning on a single income.</p>
+          <div class="course-footer">
+            <div class="course-progress-wrap">
+              <div class="course-progress-label"><span>Not started</span><span>0 of 12 lessons</span></div>
+              <div class="course-bar"><div class="course-fill" style="width:0%;"></div></div>
+            </div>
+            <button class="course-btn course-btn-start">Start Course</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="course-card fade-in">
+        <div class="course-thumb ct-purple">💬</div>
+        <div class="course-body">
+          <div class="course-tags">
+            <span class="ctag ctag-free">Always Free</span>
+            <span class="ctag ctag-weeks">3 Weeks · Self-Paced</span>
+          </div>
+          <div class="course-title">Talking to Your Kids About the Hard Stuff</div>
+          <p class="course-desc">Age-appropriate tools and scripts for navigating the conversations you dread — explaining divorce, loss, changes in lifestyle, and why things feel different now.</p>
+          <div class="course-footer">
+            <div class="course-progress-wrap">
+              <div class="course-progress-label"><span>Not started</span><span>0 of 6 lessons</span></div>
+              <div class="course-bar"><div class="course-fill" style="width:0%;"></div></div>
+            </div>
+            <button class="course-btn course-btn-start">Start Course</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="course-card fade-in">
+        <div class="course-thumb ct-amber">🌅</div>
+        <div class="course-body">
+          <div class="course-tags">
+            <span class="ctag ctag-free">Always Free</span>
+            <span class="ctag ctag-weeks">5 Weeks · Self-Paced</span>
+          </div>
+          <div class="course-title">Dating After Divorce — Doing It Right for You and Your Kids</div>
+          <p class="course-desc">When you're ready and not before. A thoughtful framework for re-entering relationships as a solo parent — protecting your kids, your heart, and your progress.</p>
+          <div class="course-footer">
+            <div class="course-progress-wrap">
+              <div class="course-progress-label"><span>Not started</span><span>0 of 10 lessons</span></div>
+              <div class="course-bar"><div class="course-fill" style="width:0%;"></div></div>
+            </div>
+            <button class="course-btn course-btn-enroll">Enroll</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ══ ARTICLES ══ -->
+    <div class="panel" id="panel-articles">
+      <div class="articles-layout">
+        <div class="fade-in">
+
+          <div class="article-card">
+            <img class="article-img" src="https://soloparent.org/wp-content/uploads/2025/03/community-1024x576.jpg" alt=""/>
+            <div class="article-body">
+              <div class="article-tags"><span class="atag atag-recovery">Recovery</span></div>
+              <div class="article-title">Why Your Kids Need You to Ask for Help</div>
+              <p class="article-excerpt">When you model vulnerability and community, you give your children something no amount of perfect parenting can — a template for how to be human.</p>
+              <div class="article-meta">Robert Beeson · March 2026 · 5 min read</div>
+            </div>
+          </div>
+
+          <div class="article-card">
+            <img class="article-img" src="https://soloparent.org/wp-content/uploads/2025/03/hugsquare.jpg" alt=""/>
+            <div class="article-body">
+              <div class="article-tags"><span class="atag atag-triage">Triage</span></div>
+              <div class="article-title">The First 90 Days — What to Focus On and What to Let Go</div>
+              <p class="article-excerpt">The early season of solo parenting is about survival, not optimization. Here's what actually matters when you're just trying to hold it together.</p>
+              <div class="article-meta">Solo Parent Team · Feb 2026 · 7 min read</div>
+            </div>
+          </div>
+
+          <div class="article-card">
+            <div class="article-img" style="background:var(--gp);display:flex;align-items:center;justify-content:center;font-size:2rem;">💰</div>
+            <div class="article-body">
+              <div class="article-tags"><span class="atag atag-general">General</span></div>
+              <div class="article-title">Building a Budget on a Single Income — A Realistic Starting Point</div>
+              <p class="article-excerpt">No shame, no judgment. Just a practical framework for where to start when the finances feel completely out of control.</p>
+              <div class="article-meta">Solo Parent Team · Jan 2026 · 8 min read</div>
+            </div>
+          </div>
+
+          <div class="article-card">
+            <div class="article-img" style="background:#F5EEFF;display:flex;align-items:center;justify-content:center;font-size:2rem;">🌿</div>
+            <div class="article-body">
+              <div class="article-tags"><span class="atag atag-wellness">Wellness</span></div>
+              <div class="article-title">What Thriving Actually Looks Like — And How You'll Know When You're There</div>
+              <p class="article-excerpt">Wellness isn't the absence of hard days. Here's what members who have reached this stage say they wish they'd known earlier.</p>
+              <div class="article-meta">Robert Beeson · Dec 2025 · 6 min read</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Article sidebar -->
+        <div class="fade-in">
+          <div class="sidebar-widget">
+            <div class="sw-head"><div class="sw-title">📌 This Month's Picks</div></div>
+            <div class="sw-body">
+              <div class="sw-item"><div class="sw-ico">🤝</div><div><div class="sw-text">Why Your Kids Need You to Ask for Help</div><div class="sw-sub">5 min · Recovery</div></div></div>
+              <div class="sw-item"><div class="sw-ico">🧠</div><div><div class="sw-text">Rebuilding Trust After It's Been Broken</div><div class="sw-sub">9 min · General</div></div></div>
+              <div class="sw-item"><div class="sw-ico">💬</div><div><div class="sw-text">Scripts for Hard Conversations with Kids</div><div class="sw-sub">6 min · Parenting</div></div></div>
+            </div>
+          </div>
+          <div class="sidebar-widget">
+            <div class="sw-head"><div class="sw-title">Browse by Topic</div></div>
+            <div class="sw-body" style="display:flex;flex-wrap:wrap;gap:6px;">
+              <span class="atopic active">All</span>
+              <span class="atopic">Parenting</span>
+              <span class="atopic">Mental Health</span>
+              <span class="atopic">Finances</span>
+              <span class="atopic">Dating</span>
+              <span class="atopic">Co-Parenting</span>
+              <span class="atopic">Identity</span>
+              <span class="atopic">Grief & Loss</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ ARCHIVE ══ -->
+    <div class="panel" id="panel-archive">
+
+      <div class="archive-search-bar fade-in">
+        <input class="archive-search" placeholder="🔍 Search all content — podcasts, town halls, guides, articles…"/>
+        <button class="archive-btn">Search</button>
+      </div>
+
+      <div class="archive-tags fade-in">
+        <div class="atopic active">All</div>
+        <div class="atopic">🎙️ Podcast</div>
+        <div class="atopic">🏛️ Town Halls</div>
+        <div class="atopic">👤 Guest Teaching</div>
+        <div class="atopic">📖 Growth Guides</div>
+        <div class="atopic">📄 Articles</div>
+        <div class="atopic">🧘 Meditations</div>
+        <div class="atopic">Triage</div>
+        <div class="atopic">Recovery</div>
+        <div class="atopic">Wellness</div>
+      </div>
+
+      <div class="archive-grid fade-in">
+
+        <div class="archive-card">
+          <div class="archive-thumb at-amber">🏛️</div>
+          <div class="archive-body">
+            <div class="archive-type">Town Hall · Recorded</div>
+            <div class="archive-title">February Society Gathering — Replay</div>
+            <div class="archive-meta">Feb 25, 2026 · 1h 12min</div>
+            <div class="archive-topic-tags"><span class="att">Community</span><span class="att">Recovery</span></div>
+          </div>
+        </div>
+
+        <div class="archive-card">
+          <div class="archive-thumb at-purple">👤</div>
+          <div class="archive-body">
+            <div class="archive-type">Guest Teaching · Recorded</div>
+            <div class="archive-title">Masterclass: Co-Parenting Without Conflict</div>
+            <div class="archive-meta">Jan 16, 2026 · 58 min</div>
+            <div class="archive-topic-tags"><span class="att">Co-Parenting</span><span class="att">All Stages</span></div>
+          </div>
+        </div>
+
+        <div class="archive-card">
+          <div class="archive-thumb at-green">📖</div>
+          <div class="archive-body">
+            <div class="archive-type">Growth Guide · PDF</div>
+            <div class="archive-title">February Growth Guide — Finding Your People</div>
+            <div class="archive-meta">Feb 2026 · 18 pages</div>
+            <div class="archive-topic-tags"><span class="att">Community</span><span class="att">Recovery</span></div>
+          </div>
+        </div>
+
+        <div class="archive-card">
+          <div class="archive-thumb at-blue">🎙️</div>
+          <div class="archive-body">
+            <div class="archive-type">Podcast Episode</div>
+            <div class="archive-title">Ep. 300 — The 300th Episode Special</div>
+            <div class="archive-meta">Oct 2025 · 1h 04min</div>
+            <div class="archive-topic-tags"><span class="att">Milestone</span><span class="att">All Stages</span></div>
+          </div>
+        </div>
+
+        <div class="archive-card">
+          <div class="archive-thumb at-amber">🏛️</div>
+          <div class="archive-body">
+            <div class="archive-type">Town Hall · Recorded</div>
+            <div class="archive-title">January Society Gathering — Replay</div>
+            <div class="archive-meta">Jan 28, 2026 · 1h 02min</div>
+            <div class="archive-topic-tags"><span class="att">New Year</span><span class="att">Wellness</span></div>
+          </div>
+        </div>
+
+        <div class="archive-card">
+          <div class="archive-thumb at-purple">👤</div>
+          <div class="archive-body">
+            <div class="archive-type">Speaker Spotlight · Recorded</div>
+            <div class="archive-title">Q4 Spotlight: Raising Resilient Kids</div>
+            <div class="archive-meta">Nov 2025 · 47 min</div>
+            <div class="archive-topic-tags"><span class="att">Parenting</span><span class="att">All Stages</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+function switchTab(tab) {
+  document.querySelectorAll('.stab').forEach((el, i) => {
+    const tabs = ['podcast','meditations','courses','articles','archive'];
+    el.classList.toggle('active', tabs[i] === tab);
+  });
+  document.querySelectorAll('.panel').forEach(el => {
+    el.classList.toggle('active', el.id === 'panel-' + tab);
+  });
+}
+
+// Filter toggles
+document.querySelectorAll('.ep-filter, .atopic, .dcat').forEach(el => {
+  el.addEventListener('click', () => {
+    const group = el.parentElement;
+    group.querySelectorAll('.ep-filter, .atopic, .dcat').forEach(d => d.classList.remove('active'));
+    el.classList.add('active');
+  });
+});
+
+// Fav toggle
+document.querySelectorAll('.med-fav').forEach(el => {
+  el.addEventListener('click', e => {
+    e.stopPropagation();
+    el.textContent = el.textContent === '🤍' ? '❤️' : '🤍';
+  });
+});
+</script>
+</body>
+</html>
