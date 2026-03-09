@@ -378,6 +378,148 @@ body{font-family:var(--font);background:var(--fog);color:var(--ink);min-height:1
 .fade-in:nth-child(3){animation-delay:.15s;}
 .fade-in:nth-child(4){animation-delay:.2s;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
+
+/* ════════════════════════════════
+   MOBILE OPTIMIZATION
+════════════════════════════════ */
+@media(max-width:768px){
+
+  /* Nav — hide center tabs, keep logo + avatar */
+  .nav{padding:0 16px;}
+  .nav-center{display:none;}
+  .nav-logo{height:24px;}
+
+  /* Hide desktop sidebar */
+  .sidebar{display:none !important;}
+
+  /* Main content full width with bottom nav padding */
+  .main{
+    margin-left:0 !important;
+    padding:16px 16px 90px !important;
+    max-width:100% !important;
+  }
+
+  /* Bottom nav bar */
+  .bottom-nav{
+    display:flex !important;
+  }
+
+  /* Stack all two/three col grids */
+  .qa-grid,
+  .two-col,
+  .bottom-row,
+  .disc-layout,
+  .events-layout,
+  .articles-layout,
+  .inbox-layout,
+  .field-row{
+    grid-template-columns:1fr !important;
+  }
+
+  /* Hide sidebar widgets on mobile */
+  .disc-sidebar,
+  .disc-sidebar *{display:none !important;}
+
+  /* Focus hero */
+  .focus-hero{
+    flex-direction:column !important;
+    padding:24px 20px !important;
+    min-height:auto !important;
+  }
+  .focus-cta{
+    align-items:stretch !important;
+    width:100% !important;
+  }
+  .focus-btn{width:100%;text-align:center;}
+
+  /* Greeting */
+  .greeting-h1{font-size:1.5rem !important;}
+
+  /* Cards */
+  .course-card{flex-direction:column !important;}
+  .course-thumb{width:100% !important;height:120px !important;}
+  .pod-hero{flex-direction:column !important;padding:24px 20px !important;}
+  .pod-hero-art{width:100% !important;height:160px !important;}
+
+  /* Profile */
+  .profile-stats{grid-template-columns:repeat(2,1fr) !important;}
+  .profile-info{padding:0 16px 20px !important;}
+  .profile-cover{height:100px !important;}
+  .profile-avatar{width:72px !important;height:72px !important;}
+  .profile-name{font-size:1.2rem !important;}
+  .edit-card{padding:20px 16px !important;}
+
+  /* Events */
+  .event-card{flex-direction:column !important;}
+  .event-date-block{width:100% !important;flex-direction:row !important;padding:12px 16px !important;gap:8px;justify-content:flex-start;}
+  .ev-day{font-size:1.3rem !important;}
+
+  /* Circles grid */
+  .circles-grid{grid-template-columns:1fr !important;}
+  .circles-header{flex-direction:column !important;gap:16px !important;padding:24px 20px !important;}
+
+  /* Section tabs scroll horizontally */
+  .section-tabs{overflow-x:auto;width:100% !important;padding-bottom:2px;}
+  .stab{white-space:nowrap;padding:9px 14px !important;}
+
+  /* Inbox */
+  .my-event-card{flex-direction:row !important;}
+  .mec-body{flex-direction:column !important;gap:10px !important;}
+  .mec-actions{flex-direction:row !important;}
+
+  /* Onboarding */
+  .app{flex-direction:column !important;}
+  .sidebar{display:none !important;}
+  .card{border-radius:0 !important;box-shadow:none !important;}
+  .card-head{padding:24px 20px 0 !important;}
+  .card-body{padding:20px 20px 32px !important;}
+  .step-title{font-size:1.4rem !important;}
+
+  /* Page headers */
+  .page-header{flex-direction:column !important;align-items:flex-start !important;gap:12px !important;}
+  .page-title{font-size:1.5rem !important;}
+
+  /* Stat card in home */
+  .stats-card{flex-direction:row !important;flex-wrap:wrap !important;}
+  .stat-item{width:50% !important;}
+}
+
+/* Bottom Nav Bar */
+.bottom-nav{
+  display:none;
+  position:fixed;bottom:0;left:0;right:0;
+  height:72px;
+  background:rgba(255,255,255,.95);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border-top:1px solid rgba(0,0,0,.08);
+  z-index:100;
+  padding:0 8px;
+  padding-bottom:env(safe-area-inset-bottom);
+  justify-content:space-around;
+  align-items:center;
+}
+.bn-item{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:8px 12px;border-radius:12px;
+  cursor:pointer;transition:all .18s;
+  border:none;background:none;font-family:var(--font);
+  min-width:56px;
+}
+.bn-item:hover{background:var(--fog);}
+.bn-item.active .bn-ico{font-size:1.3rem;}
+.bn-ico{font-size:1.2rem;transition:transform .18s;}
+.bn-label{font-size:10px;font-weight:500;color:var(--ink3);}
+.bn-item.active .bn-label{color:var(--g);font-weight:600;}
+.bn-badge{
+  position:relative;display:inline-block;
+}
+.bn-dot{
+  position:absolute;top:-2px;right:-6px;
+  width:8px;height:8px;border-radius:50%;
+  background:var(--red);border:1.5px solid #fff;
+}
+
 </style>
 </head>
 <body>
@@ -669,5 +811,27 @@ document.addEventListener('click', function(e) {
   }
 });
 </script>
+<nav class="bottom-nav">
+  <button class="bn-item active" onclick="location.href='soloparent-home.html'">
+    <span class="bn-badge"><span class="bn-ico">🏠</span></span>
+    <span class="bn-label">Home</span>
+  </button>
+  <button class="bn-item " onclick="location.href='soloparent-community.html'">
+    <span class="bn-badge"><span class="bn-ico">👥</span><span class="bn-dot"></span></span>
+    <span class="bn-label">Community</span>
+  </button>
+  <button class="bn-item " onclick="location.href='soloparent-resources.html'">
+    <span class="bn-badge"><span class="bn-ico">📚</span></span>
+    <span class="bn-label">Resources</span>
+  </button>
+  <button class="bn-item " onclick="location.href='soloparent-community.html?tab=events'">
+    <span class="bn-badge"><span class="bn-ico">📅</span></span>
+    <span class="bn-label">Events</span>
+  </button>
+  <button class="bn-item " onclick="location.href='soloparent-profile.html'">
+    <span class="bn-badge"><span class="bn-ico">👤</span></span>
+    <span class="bn-label">Profile</span>
+  </button>
+</nav>
 </body>
 </html>
