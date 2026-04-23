@@ -502,11 +502,12 @@ body{font-family:var(--font);background:var(--fog);color:var(--ink);min-height:1
       <div class="sidebar-label">Resources</div>
       <button class="sidebar-item active"><span class="si-ico">🎙️</span> Podcast</button>
       <button class="sidebar-item" onclick="location.href='soloparent-resources.html?tab=archive'"><span class="si-ico">📖</span> Growth Guide</button>
-      <button class="sidebar-item" onclick="location.href='soloparent-resources.html?tab=courses'"><span class="si-ico">🎓</span> Courses</button>
+      <button class="sidebar-item" onclick="location.href='soloparent-resources.html?tab=academy'"><span class="si-ico">🎓</span> Academy</button>
       <button class="sidebar-item" onclick="location.href='soloparent-resources.html?tab=meditations'"><span class="si-ico">🧘</span> Meditations</button>
     </div>
     <div class="sidebar-section">
       <div class="sidebar-label">My Profile</div>
+      <button class="sidebar-item" onclick="location.href='soloparent-checkin.html'"><span class="si-ico">🌅</span> Daily Check-In</button>
       <button class="sidebar-item" onclick="location.href='soloparent-profile.html'"><span class="si-ico">👤</span> Profile</button>
       <button class="sidebar-item" onclick="location.href='soloparent-profile.html'"><span class="si-ico">📬</span> Inbox <span class="si-badge">1</span></button>
       <button class="sidebar-item" onclick="location.href='soloparent-profile.html'"><span class="si-ico">⚙️</span> Settings</button>
@@ -524,7 +525,7 @@ body{font-family:var(--font);background:var(--fog);color:var(--ink);min-height:1
     <div class="section-tabs fade-in">
       <button class="stab active" onclick="switchTab('podcast')">🎙️ Podcast</button>
       <button class="stab" onclick="switchTab('meditations')">🧘 Meditations</button>
-      <button class="stab" onclick="switchTab('courses')">🎓 Courses</button>
+      <button class="stab" onclick="switchTab('academy')">🎓 Academy</button>
       <button class="stab" onclick="switchTab('articles')">📄 Articles</button>
       <button class="stab" onclick="switchTab('archive')">🗂️ Archive</button>
     </div>
@@ -742,7 +743,7 @@ body{font-family:var(--font);background:var(--fog);color:var(--ink);min-height:1
     </div>
 
     <!-- ══ COURSES ══ -->
-    <div class="panel" id="panel-courses">
+    <div class="panel" id="panel-academy">
 
       <div class="course-card fade-in">
         <div class="course-thumb ct-green">🌱</div>
@@ -993,7 +994,7 @@ if (urlTab) switchTab(urlTab);
 
 function switchTab(tab) {
   document.querySelectorAll('.stab').forEach((el, i) => {
-    const tabs = ['podcast','meditations','courses','articles','archive'];
+    const tabs = ['podcast','meditations','academy','articles','archive'];
     el.classList.toggle('active', tabs[i] === tab);
   });
   document.querySelectorAll('.panel').forEach(el => {

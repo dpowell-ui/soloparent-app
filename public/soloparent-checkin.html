@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Solo Parent Society — Daily Check-In</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --g:#34C759;--gd:#248A3D;--gp:#E8F8EC;--gm:rgba(52,199,89,.12);
+  --ink:#1D1D1F;--ink2:#3A3A3C;--ink3:#6E6E73;
+  --fog:#F5F5F7;--white:#fff;
+  --red:#FF3B30;--amber:#FF9F0A;--blue:#007AFF;--purple:#AF52DE;
+  --font:'Inter',-apple-system,sans-serif;
+  --nav:64px;
+  --ease:cubic-bezier(.4,0,.2,1);
+  --sh:0 2px 16px rgba(0,0,0,.06);
+  --sh2:0 8px 40px rgba(0,0,0,.12);
+  --r:20px;
+}
+html{-webkit-font-smoothing:antialiased;}
+body{font-family:var(--font);background:var(--fog);color:var(--ink);min-height:100vh;}
+
+/* ── NAV ── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;height:var(--nav);background:rgba(255,255,255,.85);backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,0,0,.06);display:flex;align-items:center;justify-content:space-between;padding:0 24px;}
+.nav-logo{height:28px;}
+.nav-center{display:flex;align-items:center;gap:4px;}
+.nav-tab{padding:7px 14px;border-radius:980px;font-size:13px;font-weight:500;color:var(--ink3);cursor:pointer;transition:all .18s;border:none;background:none;font-family:var(--font);}
+.nav-tab:hover{background:var(--fog);color:var(--ink);}
+.nav-tab.active{background:var(--ink);color:#fff;}
+.nav-right{display:flex;align-items:center;gap:10px;position:relative;}
+.nav-avatar{width:32px;height:32px;border-radius:50%;background:var(--gp);border:2px solid var(--g);display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;}
+.nav-notif{width:32px;height:32px;border-radius:50%;background:var(--fog);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;position:relative;}
+.notif-dot{position:absolute;top:5px;right:5px;width:8px;height:8px;border-radius:50%;background:var(--red);border:1.5px solid #fff;}
+
+/* ── LAYOUT ── */
+.app{display:flex;padding-top:var(--nav);min-height:100vh;}
+
+/* ── SIDEBAR ── */
+.sidebar{width:220px;flex-shrink:0;position:fixed;top:var(--nav);left:0;bottom:0;padding:20px 12px;overflow-y:auto;border-right:1px solid rgba(0,0,0,.06);background:rgba(255,255,255,.7);backdrop-filter:blur(20px);}
+.sidebar-section{margin-bottom:24px;}
+.sidebar-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);padding:0 10px;margin-bottom:6px;}
+.sidebar-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:10px;font-size:13px;font-weight:500;color:var(--ink2);cursor:pointer;transition:all .18s;border:none;background:none;width:100%;text-align:left;font-family:var(--font);}
+.sidebar-item:hover{background:var(--fog);}
+.sidebar-item.active{background:var(--gm);color:var(--gd);}
+.si-ico{font-size:1rem;flex-shrink:0;width:20px;text-align:center;}
+.si-badge{margin-left:auto;background:var(--red);color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:980px;}
+
+/* ── MAIN ── */
+.main{margin-left:220px;flex:1;padding:28px 32px 48px;max-width:800px;}
+
+/* ══════════════════════
+   CHECK-IN STEPS
+══════════════════════ */
+.step{display:none;animation:fadeUp .4s var(--ease) both;}
+.step.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:none;}}
+
+/* Streak banner */
+.streak-banner{
+  background:linear-gradient(135deg,var(--ink) 0%,#2A3D2A 100%);
+  border-radius:var(--r);padding:24px 28px;
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:24px;position:relative;overflow:hidden;
+}
+.streak-banner::before{content:'';position:absolute;right:-20px;top:-20px;width:120px;height:120px;border-radius:50%;background:rgba(52,199,89,.08);}
+.streak-left{}
+.streak-label{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:6px;}
+.streak-num{font-size:2.8rem;font-weight:700;letter-spacing:-.06em;color:#fff;line-height:1;}
+.streak-sub{font-size:13px;color:rgba(255,255,255,.4);margin-top:4px;}
+.streak-fire{font-size:3rem;position:relative;z-index:1;}
+
+/* Truth card */
+.truth-card{
+  background:var(--white);border-radius:var(--r);
+  box-shadow:var(--sh);padding:36px 32px;
+  text-align:center;margin-bottom:20px;
+  position:relative;overflow:hidden;
+}
+.truth-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:4px;
+  background:linear-gradient(90deg,var(--g),#30D158);
+}
+.truth-tag{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--gp);color:var(--gd);
+  border:1px solid rgba(52,199,89,.2);
+  padding:4px 12px;border-radius:980px;
+  font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  margin-bottom:20px;
+}
+.truth-text{
+  font-size:1.5rem;font-weight:600;letter-spacing:-.03em;
+  color:var(--ink);line-height:1.45;
+  margin-bottom:16px;max-width:480px;margin-left:auto;margin-right:auto;
+}
+.truth-source{font-size:13px;color:var(--ink3);font-style:italic;}
+.truth-actions{display:flex;gap:10px;justify-content:center;margin-top:24px;}
+.truth-btn{
+  padding:10px 22px;border-radius:980px;
+  font-size:13px;font-weight:600;font-family:var(--font);
+  cursor:pointer;transition:all .18s;border:none;
+}
+.truth-btn-save{background:var(--gp);color:var(--gd);}
+.truth-btn-save:hover{background:#d4f0dc;}
+.truth-btn-share{background:var(--fog);color:var(--ink2);}
+.truth-btn-share:hover{background:#ebebeb;}
+
+/* Feeling check */
+.feeling-card{
+  background:var(--white);border-radius:var(--r);
+  box-shadow:var(--sh);padding:32px;
+  margin-bottom:20px;
+}
+.card-title{font-size:1.1rem;font-weight:600;color:var(--ink);margin-bottom:6px;letter-spacing:-.02em;}
+.card-sub{font-size:14px;font-weight:300;color:var(--ink3);margin-bottom:24px;}
+.feeling-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:8px;}
+.feeling-opt{
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  padding:16px 8px;border-radius:14px;
+  border:2px solid rgba(0,0,0,.08);
+  cursor:pointer;transition:all .2s;background:var(--white);
+  font-family:var(--font);
+}
+.feeling-opt:hover{border-color:var(--g);background:var(--gp);}
+.feeling-opt.selected{border-color:var(--g);background:var(--gp);}
+.feeling-ico{font-size:1.8rem;}
+.feeling-label{font-size:11px;font-weight:500;color:var(--ink2);}
+.feeling-opt.selected .feeling-label{color:var(--gd);font-weight:600;}
+
+/* Intention */
+.intention-card{
+  background:var(--white);border-radius:var(--r);
+  box-shadow:var(--sh);padding:32px;
+  margin-bottom:20px;
+}
+.intention-opts{display:flex;flex-direction:column;gap:10px;margin-bottom:20px;}
+.intention-opt{
+  display:flex;align-items:center;gap:14px;
+  padding:16px 18px;border-radius:14px;
+  border:2px solid rgba(0,0,0,.08);
+  cursor:pointer;transition:all .2s;background:var(--white);
+  font-family:var(--font);text-align:left;width:100%;
+}
+.intention-opt:hover{border-color:var(--g);background:var(--gp);}
+.intention-opt.selected{border-color:var(--g);background:var(--gp);}
+.intention-ico{font-size:1.4rem;flex-shrink:0;}
+.intention-text strong{display:block;font-size:14px;font-weight:600;color:var(--ink);}
+.intention-text span{font-size:12px;color:var(--ink3);}
+.intention-opt.selected .intention-text strong{color:var(--gd);}
+.intention-divider{text-align:center;font-size:12px;color:var(--ink3);margin:4px 0;}
+.intention-custom{width:100%;padding:12px 16px;border:2px solid rgba(0,0,0,.08);border-radius:14px;font-size:14px;color:var(--ink);background:var(--white);outline:none;font-family:var(--font);transition:border .2s;}
+.intention-custom:focus{border-color:var(--g);}
+
+/* Complete card */
+.complete-card{
+  background:var(--white);border-radius:var(--r);
+  box-shadow:var(--sh2);padding:48px 32px;
+  text-align:center;
+}
+.complete-icon{font-size:4rem;margin-bottom:16px;animation:pop .5s var(--ease) both;}
+@keyframes pop{0%{transform:scale(0);}70%{transform:scale(1.2);}100%{transform:scale(1);}}
+.complete-title{font-size:1.6rem;font-weight:700;letter-spacing:-.04em;color:var(--ink);margin-bottom:8px;}
+.complete-sub{font-size:15px;font-weight:300;color:var(--ink3);margin-bottom:32px;line-height:1.6;max-width:360px;margin-left:auto;margin-right:auto;}
+.complete-actions{display:flex;flex-direction:column;gap:12px;max-width:320px;margin:0 auto;}
+.btn-primary{width:100%;padding:14px;border-radius:980px;background:var(--g);color:#fff;border:none;font-size:15px;font-weight:600;font-family:var(--font);cursor:pointer;transition:all .18s;}
+.btn-primary:hover{background:var(--gd);}
+.btn-secondary{width:100%;padding:14px;border-radius:980px;background:var(--fog);color:var(--ink2);border:none;font-size:15px;font-weight:500;font-family:var(--font);cursor:pointer;transition:all .18s;}
+.btn-secondary:hover{background:#ebebeb;}
+
+/* Suggested next */
+.suggested{margin-top:32px;padding-top:28px;border-top:1px solid rgba(0,0,0,.06);}
+.suggested-label{font-size:12px;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:14px;}
+.suggested-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.sug-card{
+  background:var(--fog);border-radius:14px;padding:16px;
+  cursor:pointer;transition:all .2s;text-align:left;
+  border:1.5px solid transparent;
+}
+.sug-card:hover{border-color:var(--g);background:var(--gp);}
+.sug-ico{font-size:1.4rem;margin-bottom:8px;}
+.sug-title{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:3px;}
+.sug-sub{font-size:11px;color:var(--ink3);}
+
+/* Continue btn */
+.continue-row{margin-top:20px;display:flex;justify-content:flex-end;}
+.btn-continue{
+  padding:12px 28px;border-radius:980px;
+  background:var(--g);color:#fff;border:none;
+  font-size:14px;font-weight:600;font-family:var(--font);
+  cursor:pointer;transition:all .18s;
+}
+.btn-continue:hover{background:var(--gd);}
+.btn-continue:disabled{background:rgba(0,0,0,.12);color:rgba(0,0,0,.3);cursor:not-allowed;}
+
+/* Progress dots */
+.progress-dots{display:flex;align-items:center;gap:8px;margin-bottom:28px;}
+.dot{width:8px;height:8px;border-radius:50%;background:rgba(0,0,0,.1);transition:all .3s;}
+.dot.active{background:var(--g);width:24px;border-radius:4px;}
+.dot.done{background:var(--gd);}
+
+/* ── MOBILE ── */
+@media(max-width:768px){
+  .nav-center{display:none;}
+  .sidebar{display:none;}
+  .main{margin-left:0;padding:16px 16px 90px;max-width:100%;}
+  .feeling-grid{grid-template-columns:repeat(3,1fr);}
+  .suggested-cards{grid-template-columns:1fr;}
+  .truth-text{font-size:1.2rem;}
+  .streak-banner{flex-direction:column;gap:12px;text-align:center;}
+}
+
+/* Bottom Nav */
+.bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;height:72px;background:rgba(255,255,255,.95);backdrop-filter:blur(20px);border-top:1px solid rgba(0,0,0,.08);z-index:100;padding:0 8px;padding-bottom:env(safe-area-inset-bottom);justify-content:space-around;align-items:center;}
+.bn-item{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 12px;border-radius:12px;cursor:pointer;transition:all .18s;border:none;background:none;font-family:var(--font);min-width:56px;}
+.bn-ico{font-size:1.2rem;}
+.bn-label{font-size:10px;font-weight:500;color:var(--ink3);}
+.bn-item.active .bn-label{color:var(--g);font-weight:600;}
+.bn-badge{position:relative;display:inline-block;}
+.bn-dot{position:absolute;top:-2px;right:-6px;width:8px;height:8px;border-radius:50%;background:var(--red);border:1.5px solid #fff;}
+@media(max-width:768px){.bottom-nav{display:flex !important;}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <img class="nav-logo" src="https://soloparent.org/wp-content/uploads/2025/03/Solo-Parent-Logo-RGB-Color-300x122.png" alt="Solo Parent"/>
+  <div class="nav-center">
+    <button class="nav-tab" onclick="location.href='soloparent-home.html'">Home</button>
+    <button class="nav-tab" onclick="location.href='soloparent-community.html'">Community</button>
+    <button class="nav-tab" onclick="location.href='soloparent-resources.html'">Resources</button>
+    <button class="nav-tab" onclick="location.href='soloparent-community.html?tab=events'">Events</button>
+  </div>
+  <div class="nav-right">
+    <button class="nav-notif" onclick="location.href='soloparent-profile.html?tab=personal'">🔔<div class="notif-dot"></div></button>
+    <div class="nav-avatar" onclick="toggleProfileMenu()" style="cursor:pointer;">S</div>
+    <div id="profileMenu" style="display:none;position:absolute;top:44px;right:0;background:#fff;border-radius:14px;box-shadow:0 8px 40px rgba(0,0,0,.14);padding:8px;min-width:180px;z-index:200;border:1px solid rgba(0,0,0,.06);">
+      <div onclick="location.href='soloparent-profile.html'" style="padding:10px 14px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;color:#1D1D1F;display:flex;align-items:center;gap:10px;" onmouseover="this.style.background='#F5F5F7'" onmouseout="this.style.background='none'">👤 My Profile</div>
+      <div onclick="location.href='soloparent-profile.html?tab=personal'" style="padding:10px 14px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;color:#1D1D1F;display:flex;align-items:center;gap:10px;" onmouseover="this.style.background='#F5F5F7'" onmouseout="this.style.background='none'">📬 Inbox</div>
+      <div onclick="location.href='soloparent-profile.html?tab=settings'" style="padding:10px 14px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;color:#1D1D1F;display:flex;align-items:center;gap:10px;" onmouseover="this.style.background='#F5F5F7'" onmouseout="this.style.background='none'">⚙️ Settings</div>
+      <div style="height:1px;background:rgba(0,0,0,.06);margin:6px 0;"></div>
+      <div onclick="location.href='soloparent-app.html'" style="padding:10px 14px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;color:#FF3B30;display:flex;align-items:center;gap:10px;" onmouseover="this.style.background='#FFF0EE'" onmouseout="this.style.background='none'">🚪 Log Out</div>
+    </div>
+  </div>
+</nav>
+
+<div class="app">
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Main</div>
+      <button class="sidebar-item" onclick="location.href='soloparent-home.html'"><span class="si-ico">🏠</span> Home</button>
+      <button class="sidebar-item" onclick="location.href='soloparent-community.html'"><span class="si-ico">👥</span> Community</button>
+      <button class="sidebar-item" onclick="location.href='soloparent-community.html?tab=discussions'"><span class="si-ico">💬</span> Discussions <span class="si-badge">3</span></button>
+      <button class="sidebar-item" onclick="location.href='soloparent-community.html?tab=events'"><span class="si-ico">📅</span> Events</button>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Resources</div>
+      <button class="sidebar-item" onclick="location.href='soloparent-resources.html?tab=podcast'"><span class="si-ico">🎙️</span> Podcast</button>
+      <button class="sidebar-item" onclick="location.href='soloparent-resources.html?tab=archive'"><span class="si-ico">📖</span> Growth Guide</button>
+      <button class="sidebar-item" onclick="location.href='soloparent-resources.html?tab=academy'"><span class="si-ico">🎓</span> Academy</button>
+      <button class="sidebar-item" onclick="location.href='soloparent-resources.html?tab=meditations'"><span class="si-ico">🧘</span> Meditations</button>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">My Profile</div>
+      <button class="sidebar-item active"><span class="si-ico">🌅</span> Daily Check-In</button>
+      <button class="sidebar-item" onclick="location.href='soloparent-profile.html'"><span class="si-ico">👤</span> Profile</button>
+      <button class="sidebar-item" onclick="location.href='soloparent-profile.html?tab=personal'"><span class="si-ico">📬</span> Inbox <span class="si-badge">1</span></button>
+      <button class="sidebar-item" onclick="location.href='soloparent-profile.html?tab=settings'"><span class="si-ico">⚙️</span> Settings</button>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <!-- Progress dots -->
+    <div class="progress-dots" id="progressDots">
+      <div class="dot active" id="dot0"></div>
+      <div class="dot" id="dot1"></div>
+      <div class="dot" id="dot2"></div>
+      <div class="dot" id="dot3"></div>
+    </div>
+
+    <!-- ══ STEP 1: STREAK + TRUTH ══ -->
+    <div class="step active" id="step0">
+
+      <div class="streak-banner">
+        <div class="streak-left">
+          <div class="streak-label">Current Streak</div>
+          <div class="streak-num">18</div>
+          <div class="streak-sub">days in a row 🔥</div>
+        </div>
+        <div class="streak-fire">🔥</div>
+      </div>
+
+      <div class="truth-card">
+        <div class="truth-tag">🌱 Today's Truth</div>
+        <div class="truth-text" id="todayTruth">"You don't have to have it all together. You just have to keep going."</div>
+        <div class="truth-source">— Solo Parent Society</div>
+        <div class="truth-actions">
+          <button class="truth-btn truth-btn-save" onclick="saveTruth()">🔖 Save</button>
+          <button class="truth-btn truth-btn-share">↗ Share</button>
+        </div>
+      </div>
+
+      <div class="truth-card" style="padding:28px 32px;text-align:left;">
+        <div class="truth-tag">☀️ Today's Hope</div>
+        <div class="truth-text" style="font-size:1rem;font-weight:400;color:var(--ink2);text-align:left;margin:0;margin-top:8px;">
+          Today, one small act of grace toward yourself is enough. You are showing up. That is the work.
+        </div>
+      </div>
+
+      <div class="continue-row">
+        <button class="btn-continue" onclick="nextStep()">How are you feeling? →</button>
+      </div>
+    </div>
+
+    <!-- ══ STEP 2: FEELING CHECK ══ -->
+    <div class="step" id="step1">
+      <div class="feeling-card">
+        <div class="card-title">How are you feeling this morning?</div>
+        <div class="card-sub">No right or wrong answer. Just checking in.</div>
+        <div class="feeling-grid">
+          <button class="feeling-opt" onclick="selectFeeling(this)">
+            <span class="feeling-ico">😔</span>
+            <span class="feeling-label">Struggling</span>
+          </button>
+          <button class="feeling-opt" onclick="selectFeeling(this)">
+            <span class="feeling-ico">😐</span>
+            <span class="feeling-label">Getting by</span>
+          </button>
+          <button class="feeling-opt" onclick="selectFeeling(this)">
+            <span class="feeling-ico">🙂</span>
+            <span class="feeling-label">Okay</span>
+          </button>
+          <button class="feeling-opt" onclick="selectFeeling(this)">
+            <span class="feeling-ico">😊</span>
+            <span class="feeling-label">Good</span>
+          </button>
+          <button class="feeling-opt" onclick="selectFeeling(this)">
+            <span class="feeling-ico">🌟</span>
+            <span class="feeling-label">Thriving</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="continue-row">
+        <button class="btn-continue" id="feelingBtn" disabled onclick="nextStep()">Set Today's Intention →</button>
+      </div>
+    </div>
+
+    <!-- ══ STEP 3: INTENTION ══ -->
+    <div class="step" id="step2">
+      <div class="intention-card">
+        <div class="card-title">What's your intention for today?</div>
+        <div class="card-sub">Pick one — or write your own.</div>
+        <div class="intention-opts">
+          <button class="intention-opt" onclick="selectIntention(this)">
+            <span class="intention-ico">🧘</span>
+            <div class="intention-text">
+              <strong>Stay present</strong>
+              <span>Focus on today, not the whole week</span>
+            </div>
+          </button>
+          <button class="intention-opt" onclick="selectIntention(this)">
+            <span class="intention-ico">💪</span>
+            <div class="intention-text">
+              <strong>Ask for help</strong>
+              <span>Let someone in today</span>
+            </div>
+          </button>
+          <button class="intention-opt" onclick="selectIntention(this)">
+            <span class="intention-ico">🌿</span>
+            <div class="intention-text">
+              <strong>Be gentle with myself</strong>
+              <span>Grace over perfection</span>
+            </div>
+          </button>
+          <button class="intention-opt" onclick="selectIntention(this)">
+            <span class="intention-ico">🎯</span>
+            <div class="intention-text">
+              <strong>Do one hard thing</strong>
+              <span>Just one. That's enough.</span>
+            </div>
+          </button>
+        </div>
+        <div class="intention-divider">— or —</div>
+        <input class="intention-custom" type="text" placeholder="Write your own intention..." oninput="enableIntentionContinue()"/>
+      </div>
+
+      <div class="continue-row">
+        <button class="btn-continue" id="intentionBtn" disabled onclick="nextStep()">Complete Check-In →</button>
+      </div>
+    </div>
+
+    <!-- ══ STEP 4: COMPLETE ══ -->
+    <div class="step" id="step3">
+      <div class="complete-card">
+        <div class="complete-icon">✅</div>
+        <div class="complete-title">You checked in.</div>
+        <div class="complete-sub">That took 2 minutes and it matters. You showed up for yourself today — and that's exactly what your kids need most.</div>
+
+        <div class="complete-actions">
+          <button class="btn-primary" onclick="location.href='soloparent-resources.html?tab=meditations'">🧘 Start Today's Meditation</button>
+          <button class="btn-secondary" onclick="location.href='soloparent-home.html'">Go to Home</button>
+        </div>
+
+        <div class="suggested">
+          <div class="suggested-label">Suggested for you today</div>
+          <div class="suggested-cards">
+            <div class="sug-card" onclick="location.href='soloparent-resources.html?tab=podcast'">
+              <div class="sug-ico">🎙️</div>
+              <div class="sug-title">Latest Podcast</div>
+              <div class="sug-sub">When You're Running on Empty</div>
+            </div>
+            <div class="sug-card" onclick="location.href='soloparent-community.html'">
+              <div class="sug-ico">👥</div>
+              <div class="sug-title">Morning Circle</div>
+              <div class="sug-sub">Starts in 12 minutes</div>
+            </div>
+            <div class="sug-card" onclick="location.href='soloparent-resources.html?tab=academy'">
+              <div class="sug-ico">🎓</div>
+              <div class="sug-title">Academy</div>
+              <div class="sug-sub">Continue: 4 Habits of Healthy Solo Parents</div>
+            </div>
+            <div class="sug-card" onclick="location.href='soloparent-community.html?tab=discussions'">
+              <div class="sug-ico">💬</div>
+              <div class="sug-title">Discussion</div>
+              <div class="sug-sub">March Focus: Share your win</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<nav class="bottom-nav">
+  <button class="bn-item" onclick="location.href='soloparent-home.html'">
+    <span class="bn-badge"><span class="bn-ico">🏠</span></span>
+    <span class="bn-label">Home</span>
+  </button>
+  <button class="bn-item" onclick="location.href='soloparent-community.html'">
+    <span class="bn-badge"><span class="bn-ico">👥</span><span class="bn-dot"></span></span>
+    <span class="bn-label">Community</span>
+  </button>
+  <button class="bn-item active" onclick="location.href='soloparent-checkin.html'">
+    <span class="bn-badge"><span class="bn-ico">🌅</span></span>
+    <span class="bn-label">Check-In</span>
+  </button>
+  <button class="bn-item" onclick="location.href='soloparent-resources.html'">
+    <span class="bn-badge"><span class="bn-ico">📚</span></span>
+    <span class="bn-label">Resources</span>
+  </button>
+  <button class="bn-item" onclick="location.href='soloparent-profile.html'">
+    <span class="bn-badge"><span class="bn-ico">👤</span></span>
+    <span class="bn-label">Profile</span>
+  </button>
+</nav>
+
+<script>
+let currentStep = 0;
+
+const truths = [
+  '"You don\'t have to have it all together. You just have to keep going."',
+  '"Your kids don\'t need a perfect parent. They need a present one."',
+  '"The fact that you\'re worried about doing it right means you\'re doing it right."',
+  '"Rest is not a reward. It\'s a requirement."',
+  '"You were made for this. Even on the days it doesn\'t feel like it."',
+];
+
+// Show random truth
+document.getElementById('todayTruth').textContent = truths[Math.floor(Math.random() * truths.length)];
+
+function nextStep() {
+  document.getElementById('step' + currentStep).classList.remove('active');
+  document.getElementById('dot' + currentStep).classList.remove('active');
+  document.getElementById('dot' + currentStep).classList.add('done');
+  currentStep++;
+  document.getElementById('step' + currentStep).classList.add('active');
+  if (currentStep < 4) {
+    document.getElementById('dot' + currentStep).classList.add('active');
+  }
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function selectFeeling(el) {
+  document.querySelectorAll('.feeling-opt').forEach(e => e.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('feelingBtn').disabled = false;
+}
+
+function selectIntention(el) {
+  document.querySelectorAll('.intention-opt').forEach(e => e.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('intentionBtn').disabled = false;
+}
+
+function enableIntentionContinue() {
+  document.getElementById('intentionBtn').disabled = false;
+  document.querySelectorAll('.intention-opt').forEach(e => e.classList.remove('selected'));
+}
+
+function saveTruth() {
+  const btn = document.querySelector('.truth-btn-save');
+  btn.textContent = '✓ Saved';
+  btn.style.background = 'var(--gd)';
+  btn.style.color = '#fff';
+}
+
+function toggleProfileMenu() {
+  const menu = document.getElementById('profileMenu');
+  menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+}
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.nav-right')) {
+    const menu = document.getElementById('profileMenu');
+    if (menu) menu.style.display = 'none';
+  }
+});
+</script>
+</body>
+</html>
